@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    body {
+        font-size: 18px;
+    }
+</style>
+
+<body>
+    <h1 align="left"><strong><em><img src="Images/icon_select.gif" width="13" height="13"> 
+    </em>Batch Report</strong> Details</h1>
+    <div align="center">
+        <table width="100%" cellpadding="0" cellspacing="1">
+            <tr align="center" valign="top" bgcolor="#FFFFFF">
+                <td width="70" bgcolor="#53baff">
+                    <div align="left">
+                        <font color="#000000"><small><u>User ID</u></small></font>
+                    </div>
+                </td>
+                <td width="70" bgcolor="#53baff">
+                    <div align="left">
+                        <font color="#000000"><small><u>Lot ID</u></small></font>
+                    </div>
+                </td>
+                <td width="70" bgcolor="#53baff">
+                    <div align="left">
+                        <font color="#000000"><small><u>PD ORDER</u></small></font>
+                    </div>
+                </td>
+                <td width="70" bgcolor="#53baff">
+                    <div align="left">
+                        <font color="#000000"><small><u>Recipe Name</u></small></font>
+                    </div>
+                </td>
+                <td width="70" bgcolor="#53baff">
+                    <div align="left">
+                        <font color="#000000"><small><u>Recipe Version</u></small></font>
+                    </div>
+                </td>
+
+                <td width="70" bgcolor="#53baff">
+                    <div align="left">
+                        <font color="#000000"><small><u>Approval</u></small></font>
+                    </div>
+                </td>
+                <td width="70" bgcolor="#53baff">
+                    <div align="left">
+                        <font color="#000000"><small><u>Batch Size</u></small></font>
+                    </div>
+                </td>
+                <td width="70" bgcolor="#53baff">
+                    <div align="left">
+                        <font color="#000000"><small><u>Train</u></small></font>
+                    </div>
+                </td>
+                <td width="70" bgcolor="#53baff">
+                    <div align="left">
+                        <font color="#000000"><small><u>Batch Closed</u></small></font>
+                    </div>
+                </td>
+
+            </tr>
+            <tr align="center" valign="top" bgcolor="#FFFFFF">
+
+                <td width="70" bgcolor="#CDEBFF">
+                    <div align="left">
+                        <font color="#000000"><small>{{Campaign_ID}}</small></font>
+                    </div>
+                </td>
+                <td width="70" bgcolor="#CDEBFF">
+                    <div align="left">
+                        <font color="#000000"><small>{{Lot_ID}}</small></font>
+                    </div>
+                </td>
+                <td width="70" bgcolor="#CDEBFF">
+                    <div align="left">
+                        <font color="#000000"><small>{{Batch_ID}}</small></font>
+                    </div>
+                </td>
+                <td width="70" bgcolor="#CDEBFF">
+                    <div align="left">
+                        <font color="#000000"><small>{{Recipe_ID}}</small></font>
+                    </div>
+                </td>
+
+                <td width="70" bgcolor="#CDEBFF">
+                    <div align="left">
+                        <font color="#000000"><small>{{recipe_Name}}</small></font>
+                    </div>
+                </td>
+                <td width="70" bgcolor="#CDEBFF">
+                    <div align="left">
+                        <font color="#000000"><small>{{ApprovalCode}}</small></font>
+                    </div>
+                </td>
+                <td width="70" bgcolor="#CDEBFF">
+                    <div align="left">
+                        <font color="#000000"><small>{{Batch_Size}}</small></font>
+                    </div>
+                </td>
+                <td width="70" bgcolor="#CDEBFF">
+                    <div align="left">
+                        <font color="#000000"><small>{{Train_ID}}</small></font>
+                    </div>
+                </td>
+                <td width="70" bgcolor="#CDEBFF">
+                    <div align="left">
+                        <font color="#000000"><small>{{Log_Close_DT}}</small></font>
+                    </div>
+                </td>
+
+
+            </tr>
+        </table>
+    </div>
+    <h1 align="left"><strong><em><img src="Images/icon_select.gif" width="13" height="13"> 
+    </em>Batch Operations</strong></h1>
+    <div align="center">
+        <table width="100%" cellpadding="0" cellspacing="1">
+            {%for a in range(n)%}
+
+            <tr align="center" valign="top" bgcolor="#FFFFFF">
+                <td align="Left" width="178" bgcolor="#53baff">
+                    <font face="MS Sans Serif" size="1" color="#000000"><small><b>{{section[a][0]}}</b></small></font>
+                </td>
+                <td align="Left" width="178" bgcolor="#9bd7ff">
+                    <font face="MS Sans Serif" size="1" color="#000000"><small>{{section[a][1]}}</small></font>
+                </td>
+                <td align="Left" width="178" bgcolor="#9bd7ff">
+                    <font face="MS Sans Serif" size="1" color="#000000"><small>{{section[a][2]}}</small></font>
+                </td>
+                <td align="Left" width="178" bgcolor="#9bd7ff">
+                    <font face="MS Sans Serif" size="1" color="#000000"><small>{{section[a][3]}}</small></font>
+                </td>
+                <td align="Left" width="178" bgcolor="#9bd7ff">
+                    <font face="MS Sans Serif" size="1" color="#000000"><small>Unit</small></font>
+                </td>
+            </tr>
+            {%if section[a][0] == 'AddPrew' or section[a][0] == 'AddPDye' or section[a][0] == 'AddBulk' or section[a][0] == 'Flush' %}
+            <tr align="center" valign="top" bgcolor="#FFFFFF">
+                <td align="Left" width="178" bgcolor="#CDEBFF">
+                    <font face="MS Sans Serif" size="1" color="#000000"><small><u>Material ID</u></small></font>
+                </td>
+                <td align="Left" width="178" bgcolor="#CDEBFF">
+                    <font face="MS Sans Serif" size="1" color="#000000"><small><u>Material Name</u></small></font>
+                </td>
+                <td align="Left" width="178" bgcolor="#CDEBFF">
+                    <font face="MS Sans Serif" size="1" color="#000000"><small><u>Target</u></small></font>
+                </td>
+                <td align="Left" width="178" bgcolor="#CDEBFF">
+                    <font face="MS Sans Serif" size="1" color="#000000"><small><u>Actual<u></small></font>
+                </td>
+                <td align="Left" width="178" bgcolor="#CDEBFF">
+                    <font face="MS Sans Serif" size="1" color="#000000"><small><u><u></small></font>
+                </td>
+
+            </tr>
+            <tr align="center" valign="top" bgcolor="#FFFFFF">
+                <td align="Left" width="178" bgcolor="#CDEBFF">
+                    <font face="MS Sans Serif" size="1" color="#000000"><small>{{MaterialAll[a][0]}}</small></font>
+                </td>
+                <td align="Left" width="178" bgcolor="#CDEBFF">
+                    <font face="MS Sans Serif" size="1" color="#000000"><small>{{MaterialAll[a][1]}}</small></font>
+                </td>
+                <td align="Left" width="178" bgcolor="#CDEBFF">
+                    <font face="MS Sans Serif" size="1" color="#000000"><small>{{MaterialAll[a][2]}}</small></font>
+                </td>
+                <td align="Left" width="178" bgcolor="#CDEBFF">
+                    <font face="MS Sans Serif" size="1" color="#000000"><small>{{MaterialAll[a][3]}}</small></font>
+                </td>
+                <td align="Left" width="178" bgcolor="#CDEBFF">
+                    <font face="MS Sans Serif" size="1" color="#000000"><small></small></font>
+                </td>
+            </tr>
+            {%endif%}
+            <div align="center">
+
+                <tr align="center" valign="top" bgcolor="#FFFFFF">
+                    <td align="Left" width="178" bgcolor="#CDEBFF">
+                        <font face="MS Sans Serif" size="1" color="#000000"><small><u>Parameter_ID</u></small></font>
+                    </td>
+                    <td align="Left" width="178" bgcolor="#CDEBFF">
+                        <font face="MS Sans Serif" size="1" color="#000000"><small><u>Date Time</u></small></font>
+                    </td>
+                    <td align="Left" width="178" bgcolor="#CDEBFF">
+                        <font face="MS Sans Serif" size="1" color="#000000"><small><u>Target</u></small></font>
+                    </td>
+                    <td align="Left" width="178" bgcolor="#CDEBFF">
+                        <font face="MS Sans Serif" size="1" color="#000000"><small><u>Actual<u></small></font>
+                    </td>
+                    <td align="Left" width="178" bgcolor="#CDEBFF">
+                        <font face="MS Sans Serif" size="1" color="#000000"><small><u>Unit Of Measure<u></small></font>
+                    </td>
+                </tr>
+                {%for j in range(listrow[a])%}
+
+                <tr align="center" valign="top" bgcolor="#FFFFFF">
+                    <td align="Left" width="178" bgcolor="#CDEBFF">
+                        <font face="MS Sans Serif" size="1" color="#000000"><small>{{details[a][j][1]}}</small></font>
+                    </td>
+                    <td align="Left" width="178" bgcolor="#CDEBFF">
+                        <font face="MS Sans Serif" size="1" color="#000000"><small>{{details[a][j][0]}}</small></font>
+                    </td>
+                    <td align="Left" width="178" bgcolor="#CDEBFF">
+                        <font face="MS Sans Serif" size="1" color="#000000"><small>{{details[a][j][2]}}</small></font>
+                    </td>
+                    <td align="Left" width="178" bgcolor="#CDEBFF">
+                        <font face="MS Sans Serif" size="1" color="#000000"><small>{{details[a][j][3]}}</small></font>
+                    </td>
+                    <td align="Left" width="178" bgcolor="#CDEBFF">
+                        <font face="MS Sans Serif" size="1" color="#000000"><small>{{details[a][j][4]}}</small></font>
+                    </td>
+                </tr>
+                {%endfor%}
+
+            </div>
+            {%endfor%}
+        </table>
+    </div>
+</body>
+
+</html>
