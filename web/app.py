@@ -26,6 +26,14 @@ def batch_report():
     #SQL_Login.execute("Exec USP_Journal_Rpt '" + Campaign_ID + "','"+ Lot_ID +"','"+ StartOfPeriod_DT + "','"+EndOfPeriod_DT+"'" )
     return render_template('batch_report.html')
 
+@app.route('/report')
+def report():
+    #cnxn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER='+ host +';DATABASE='+database+';UID='+user+';PWD='+passwd)
+    #SQL_Login = cnxn.cursor()
+    #SQL_Login.execute("Exec USP_Journal_Rpt '" + Campaign_ID + "','"+ Lot_ID +"','"+ StartOfPeriod_DT + "','"+EndOfPeriod_DT+"'" )
+    return render_template('report.html')
+
+
 @app.route('/Raw_Material/Raw_Material/<string:data>')
 def Raw_Material(data):
     return render_template('RawMaterial.html',data=data)
@@ -261,7 +269,7 @@ def modeReport(mode,data):
         MaterialAll = MaterialAll)
  
 @app.route('/batch_report_API' ,methods=["GET", "POST"])
-def Report_OEE_API():
+def batch_report_API():
     global count
     q = request.args.get('q')
     
@@ -280,36 +288,13 @@ def Report_OEE_API():
         batch_report = cnxn.cursor()
         batch_report.execute("SELECT PD_ORDER , PD_PLAN_DT , PD_TARGET_QTY ,PD_UNIT , PD_FM_CODE,PD_FM_NAME , PD_BATCHNO ,PD_PROC_P_ST , PD_PROC_O_ST , PD_PROC_M_ST , PD_PROC_Q_ED , PD_PROC_S_DT ,PD_STATUS_CODE FROM [dbo].[PD_ORDER_VIEW_RPT] ")
         
-        
-        host = "172.30.1.203"
-        port = 1433
-        database = "BatchHistory"
-        user = "sa"
-        passwd = "p@ssw0rd"
-        Campaign_ID="*"
-        Lot_ID="*"
-        data ='*'
-        StartOfPeriod_DT="1/11/2021 12:00:00"
-        now  = datetime.now()
-        EndOfPeriod_DT= now.strftime("%m/%d/%Y %H:%M:%S")
-        print(EndOfPeriod_DT)
-        
-        cnxn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER='+ host +';DATABASE='+database+';UID='+user+';PWD='+passwd)
-        USP_Journal_Rpt = cnxn.cursor()
-        USP_Journal_Rpt.execute("SELECT distinct Batch_ID From BatchIdLog ")
-        Batch_ID = []
-        
-        for i in USP_Journal_Rpt:
-            
-            Batch_ID.append(i[0])
     
         payload = []
         content = {}
         for result in batch_report:
-            if result[0] in Batch_ID:
-                content = {'PD': result[0], 'PD_PLAN_DT': str(result[1]), 'PD_TARGET_QTY': result[2],'PD_UNIT': result[3],'PD_FM_CODE': result[4]+'/'+result[5],'PD_BATCHNO': result[6],'PD_PROC_P_ST': str(result[7]),'PD_PROC_O_ST': str(result[8]),'PD_PROC_M_ST': str(result[9]),'PD_PROC_Q_ED': str(result[10]),'PD_PROC_S_DT': str(result[11]),'PD_STATUS_CODE': str(result[12])}
-                payload.append(content)
-                content = {}
+            content = {'PD': result[0], 'PD_PLAN_DT': str(result[1]), 'PD_TARGET_QTY': result[2],'PD_UNIT': result[3],'PD_FM_CODE': result[4]+'/'+result[5],'PD_BATCHNO': result[6],'PD_PROC_P_ST': str(result[7]),'PD_PROC_O_ST': str(result[8]),'PD_PROC_M_ST': str(result[9]),'PD_PROC_Q_ED': str(result[10]),'PD_PROC_S_DT': str(result[11]),'PD_STATUS_CODE': str(result[12])}
+            payload.append(content)
+            content = {}
         #print(payload)
         return json.dumps({"data":payload}, cls = Encoder), 201
          
