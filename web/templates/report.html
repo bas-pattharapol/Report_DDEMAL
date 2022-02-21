@@ -424,14 +424,14 @@
                                     <th colspan="2" style="text-align: center">Parameter 6</th>
                                     <th colspan="2" style="text-align: center">Parameter 7</th>
                                     <th colspan="2" style="text-align: center">Parameter 8</th>
-                                    <th colspan="1" style="text-align: center"></th>
+
                                 </tr>
                                 <tr>
 
                                     <th style="text-align: center">Phase</th>
-                                    <th style="text-align: center">Status</th>
                                     <th style="text-align: center">Start Time</th>
                                     <th style="text-align: center">End Time</th>
+                                    <th style="text-align: center">Duration (min)</th>
                                     <th style="text-align: center">SP</th>
                                     <th style="text-align: center">PV</th>
                                     <th style="text-align: center">SP</th>
@@ -448,18 +448,17 @@
                                     <th style="text-align: center">PV</th>
                                     <th style="text-align: center">SP</th>
                                     <th style="text-align: center">PV</th>
-                                    <th style="text-align: center">User_Mixing</th>
+
 
                                 </tr>
                             </thead>
                             <tbody>
                                 {%for i in ST_Report%}
                                 <tr class="group">
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
                                     {%for j in range(len)%} {%if i[2]|string == Phase_Parameter[j]['PhaseID']|string%}
+                                    <td colspan="4" align="left" style="font-family: Arial, Helvetica, sans-serif;font-weight: bold; font-size: 14px; ">{{Phase_Parameter[j]['PhaseName']}}</td>
+                                    <td style="display: none;"></td>
+                                    {%endif%} {%if i[2]|string == Phase_Parameter[j]['PhaseID']|string%}
                                     <td colspan="2" align="center" style="font-family: Arial, Helvetica, sans-serif;font-weight: bold; font-size: 14px; ">{{Phase_Parameter[j]['Parameter1']}}</td>
                                     <td style="display: none;"></td>
                                     {%endif%} {%if i[2]|string == Phase_Parameter[j]['PhaseID']|string%}
@@ -484,14 +483,14 @@
                                     <td colspan="2" align="center" style="font-family: Arial, Helvetica, sans-serif;font-weight: bold; font-size: 14px; ">{{Phase_Parameter[j]['Parameter8']}}</td>
                                     <td style="display: none;"></td>
                                     {%endif%} {%endfor%}
-                                    <td></td>
+
 
                                 </tr>
                                 <tr>
                                     <td align="center">{{i[2]}}</td>
-                                    <td align="center">{{i[3]}}</td>
                                     <td align="center">{{i[4]}}</td>
                                     <td align="center">{{i[5]}}</td>
+                                    <td align="center">{{i[23]//60}}:{{i[23]%60}}</td>
                                     <td align="center">{{i[6]}}</td>
                                     <td align="center">{{i[7]}}</td>
                                     <td align="center">{{i[8]}}</td>
@@ -508,7 +507,7 @@
                                     <td align="center">{{i[19]}}</td>
                                     <td align="center">{{i[20]}}</td>
                                     <td align="center">{{i[21]}}</td>
-                                    <td align="center">{{i[22]}}</td>
+
 
                                 </tr>
 
@@ -721,7 +720,7 @@
                                 <td align="center">--</td>
                                 <td align="center">--</td>
                                 <td align="center">--</td>
-                                <td align="center">--</td>
+
 
                             </tbody>
 
@@ -798,7 +797,6 @@
 </body>
 <script>
     $(document).ready(function() {
-
 
         var groupColumn = 2;
         var data1 = 20;
