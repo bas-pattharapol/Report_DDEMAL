@@ -65,9 +65,28 @@ def Raw_Material_API(data):
     
 @app.route('/report/<string:pdOrder>')
 def modeReport(pdOrder):
-    #print(data)
+    server = "172.30.2.2"
+    port = 5432
+    database = "OEE_DB"
+    username = "sa"
+    password = "p@ssw0rd"
+    cnxn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER='+ server +';DATABASE='+database+';UID='+username+';PWD='+password)
+    ST_Report = cnxn.cursor()
+    ST_Report.execute("SELECT * FROM SCADA_DB.dbo.Mixing_Report mr  WHERE PhaseID > 200 AND PhaseID < 300 AND PD_ORDER = '" +pdOrder+ "' ORDER BY Start_time ASC")
     
-    return render_template('report.html',pdOrder=pdOrder)
+    cnxn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER='+ server +';DATABASE='+database+';UID='+username+';PWD='+password)
+    Phase_Parameter = cnxn.cursor()
+    Phase_Parameter.execute("SELECT PhaseID ,Parameter1,Parameter2,Parameter3,Parameter4,Parameter5,Parameter6,Parameter7,Parameter8 FROM SCADA_DB.dbo.Phase_Parameter") 
+    
+    Phase_Parameter_DIR = Phase_Parameter.fetchall()
+
+    insertObject = []
+    columnNames = [column[0] for column in Phase_Parameter.description]
+    for record in Phase_Parameter_DIR:
+        insertObject.append( dict( zip( columnNames , record ) ) )
+    print(insertObject)
+    
+    return render_template('report.html',pdOrder=pdOrder,Phase_Parameter=insertObject,ST_Report=ST_Report,len=len(Phase_Parameter_DIR))
  
 @app.route('/batch_report_API' ,methods=["GET", "POST"])
 def batch_report_API():
