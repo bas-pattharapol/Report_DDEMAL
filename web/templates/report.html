@@ -29,9 +29,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='dist/css/AdminLTE.min.css')}}">
     <!-- AdminLTE Skins. Choose a skin from the css/skins
        folder instead of downloading all of them to reduce the load. -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='dist/css/skins/_all-skins.min.css')}}">
-
-
+    <link rel="stylesheet" href="{{ url_for('static', filename='dist/css/skins/_all-skins.min.css')}}"> https://code.jquery.com/jquery-3.5.1.js
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
   <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
@@ -41,7 +39,6 @@
     <link href="{{ url_for('static', filename='table/jquery.dataTables.min.css') }}" rel="stylesheet">
     <link href="{{ url_for('static', filename='table/jquery.buttons.dataTables.min.css') }}" rel="stylesheet">
     <link href="{{ url_for('static', filename='table/dataTables.dateTime.min.css') }}" rel="stylesheet">
-
 
     <script src="{{ url_for('static', filename='table/jquery-3.5.1.js') }}"></script>
     <script src="{{ url_for('static', filename='table/jquery.dataTables.min.js') }}"></script>
@@ -410,6 +407,9 @@
 
             <div id="Mixing_Storage" class="tabcontent">
                 <h3>Mixing_Storage</h3>
+                Toggle column: <a href="#" class="toggle-vis" data-column="0">Name</a> - <a class="toggle-vis" data-column="1">Position</a> - <a class="toggle-vis" data-column="2">Office</a> - <a class="toggle-vis" data-column="3">Age</a> - <a class="toggle-vis"
+                    data-column="4">Start date</a> - <a class="toggle-vis" data-column="5">Salary</a>
+
                 <div class="white-box" style="width:100%">
                     <div class="table-responsive" style="width:100%">
                         <table id="example3" class="display nowrap" style="width:100%">
@@ -490,23 +490,32 @@
                                     <td align="center">{{i[2]}}</td>
                                     <td align="center">{{i[4]}}</td>
                                     <td align="center">{{i[5]}}</td>
-                                    <td align="center">{{i[23]//60}}:{{i[23]%60}}</td>
-                                    <td align="center">{{i[6]}}</td>
-                                    <td align="center">{{i[7]}}</td>
-                                    <td align="center">{{i[8]}}</td>
-                                    <td align="center">{{i[9]}}</td>
-                                    <td align="center">{{i[10]}}</td>
-                                    <td align="center">{{i[11]}}</td>
-                                    <td align="center">{{i[12]}}</td>
-                                    <td align="center">{{i[13]}}</td>
-                                    <td align="center">{{i[14]}}</td>
-                                    <td align="center">{{i[15]}}</td>
-                                    <td align="center">{{i[16]}}</td>
-                                    <td align="center">{{i[17]}}</td>
-                                    <td align="center">{{i[18]}}</td>
-                                    <td align="center">{{i[19]}}</td>
-                                    <td align="center">{{i[20]}}</td>
-                                    <td align="center">{{i[21]}}</td>
+                                    {%if i[23]//60
+                                    < 10 and i[23]%60 < 10 %} <td align="center">0{{i[23]//60}}:0{{i[23]%60}}</td>
+                                        {%elif i[23]//60 >10 and i[23]%60
+                                        < 10 %} <td align="center">{{i[23]//60}}:0{{i[23]%60}}</td>
+                                            {%elif i[23]//60
+                                            <10 and i[23]%60>10 %}
+                                                <td align="center">0{{i[23]//60}}:{{i[23]%60}}</td>
+                                                {%else%}
+                                                <td align="center">{{i[23]//60}}:{{i[23]%60}}</td>
+                                                {%endif%}
+                                                <td align="center">{{i[6]}}</td>
+                                                <td align="center">{{i[7]}}</td>
+                                                <td align="center">{{i[8]}}</td>
+                                                <td align="center">{{i[9]}}</td>
+                                                <td align="center">{{i[10]}}</td>
+                                                <td align="center">{{i[11]}}</td>
+                                                <td align="center">{{i[12]}}</td>
+                                                <td align="center">{{i[13]}}</td>
+                                                <td align="center">{{i[14]}}</td>
+                                                <td align="center">{{i[15]}}</td>
+                                                <td align="center">{{i[16]}}</td>
+                                                <td align="center">{{i[17]}}</td>
+                                                <td align="center">{{i[18]}}</td>
+                                                <td align="center">{{i[19]}}</td>
+                                                <td align="center">{{i[20]}}</td>
+                                                <td align="center">{{i[21]}}</td>
 
 
                                 </tr>
@@ -795,6 +804,7 @@
 
 
 </body>
+
 <script>
     $(document).ready(function() {
 
@@ -900,6 +910,10 @@
                 });
             }
         });
+
+
+
+
         var table4 = $('#example4').DataTable({
             "searching": false,
             "orderable": false,
