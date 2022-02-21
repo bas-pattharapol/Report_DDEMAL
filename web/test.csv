@@ -1,0 +1,68 @@
+Phase_ID,Phase_Name,Description,Parameter1,Parameter2,Parameter3,Parameter4,Parameter5,Parameter6,Parameter7,Parameter8
+11,MM_DoseDIW,Dose Hot Water to Mixer,Setpoint (kg),-,-,-,-,-,-,-
+13,MM_Turbine,Agitator or Turbine,On/Off,Speed (RPM),-,-,-,-,-,-
+14,MM_Heating,Heat Main Mixer or PreMixer,Temperature Setpoint (C),Deadband,On/Off,-,-,-,-,-
+16,MM_WaitTime,Wait Mixing Time,Time Setpoint (Sec),-,-,-,-,-,-,-
+17,MM_Transfer (Edit),Transfer from Premix to Main Mixer,Mode 1=ON / 2= OFF,MSG Code 1=Open / 2=Close,Transfer from Premixer No.,-,-,-,-,-
+19,MM_AddPreweight,Add Preweight Material to Mixer,Material ID,Number of Partial,Index,-,-,-,-,-
+20,MM_TempCheck,Check Mixer Temperature,Code,SP,Deadband,Code 1(Hi) 2(Low) 3(Between),-,-,-,-
+21,MM_PipePriming,Fill Water Into Discharge Pipe,Setpoint (kg),Timer (Sec),-,-,-,-,-,-
+22,MM_OperMSG,Interface With Operator,Code,"Ans. (Yes=1 , No=2)",Number of Partial,Material ID NO.1,Material ID NO.2,Material ID NO.3,Code ,-
+23,MM_Scraper,Scraper,On/Off,Speed (RPM),-,-,-,-,-,-
+24,MM_Shear,Recirculation with Shear Pump,On/Off,Speed (RPM),Mode 1=Cooling / 2=Bypass,-,-,-,-,-
+25,MM_Bulk_Check,Check Volume of Bulk,Volume (cm),-,-,-,-,-,-,-
+26,MM_Cooling_Plate,Cooldown Base at Cool Plate,Temperature Setpoint (?C),Deadband,On/Off,Mode 1=Cooling / 2=Bypass,-,-,-,-
+27,MM_Cooling (Add),Cool Main Mixer or PreMixer,Temperature Setpoint (?C),Deadband,On/Off,-,-,-,-,-
+28,MM_DrainJack (Add),Drain Jacket,Time Setpoint (Sec),-,-,-,-,-,-,-
+29,MM_INLINE_DOSING,Dosing with Shear Pump,On/Off,-,-,-,-,-,-,-
+30,MM_CHECK_READY,Check Ready for Mixing,-,-,-,-,-,-,-,-
+101,PM_01_DoseDIW,Dose Hot Water to PreMixer,Setpoint (kg),-,-,-,-,-,-,-
+103,PM_01_Turbine,Agitator or Turbine,On/Off,Speed (RPM),-,-,-,-,-,-
+104,PM_01_Heating,Heat PreMixer,Temperature Setpoint (?C),Deadband,On/Off,-,-,-,-,-
+106,PM_01_WaitTime,Wait Mixing Time,Time Setpoint (Sec),-,-,-,-,-,-,-
+107,PM_01_TransferReady,Transfer to Storage,None,None,-,-,-,-,-,-
+109,PM_01_AddPreweight,Add Preweight Material to Mixer,Material ID,Number of Partial,Index,-,-,-,-,-
+110,PM_01_TempCheck,Check Mixer Temperature,Code,SP,Deadband,Code 1(Hi) 2(Low) 3(Between),-,-,-,-
+111,PM_01_OperMSG,Interface With Operator,Code,"Ans. (Yes=1 , No=2)",Number of Partial,Material ID NO.1,Material ID NO.2,Material ID NO.3,Code ,-
+112,PM_01_Scraper (Add),Scraper,On/Off,Speed (RPM),-,-,-,-,-,-
+113,PM_CHECK_READY,Check Ready for Mixing,-,-,-,-,-,-,-,-
+151,PM_02_DoseDIW,Dose Hot Water to PreMixer,Setpoint (kg),-,-,-,-,-,-,-
+153,PM_02_Turbine,Agitator or Turbine,On/Off,Speed (RPM),-,-,-,-,-,-
+154,PM_02_Heating,Heat PreMixer,Temperature Setpoint (?C),Deadband,On/Off,-,-,-,-,-
+156,PM_02_WaitTime,Wait Mixing Time,Time Setpoint (Sec),-,-,-,-,-,-,-
+157,PM_02_TransferReady,Transfer to Storage,None,None,-,-,-,-,-,-
+159,PM_02_AddPreweight,Add Preweight Material to Mixer,Material ID,Number of Partial,Index,-,-,-,-,-
+160,PM_02_TempCheck,Check Mixer Temperature,Code,SP,Deadband,Code 1(Hi) 2(Low) 3(Between),-,-,-,-
+161,PM_02_OperMSG,Interface With Operator,Code,"Ans. (Yes=1 , No=2)",Number of Partial,Material ID NO.1,Material ID NO.2,Material ID NO.3,Code ,-
+162,PM_02_Scraper (Add),Scraper,On/Off,Speed (RPM),-,-,-,-,-,-
+201,ST_Flush,Flush with DIW,Setpoint (kg),-,-,-,-,-,-,-
+203,ST_Turbine,Agitator or Turbine,On/Off,Speed (RPM),-,-,-,-,-,-
+206,ST_WaitTime,Wait Mixing Time,Time Setpoint (Sec),-,-,-,-,-,-,-
+209,ST_AddPreweight,Add Preweight Material to Mixer,Material ID,Number of Partial,Index,-,-,-,-,-
+210,ST_TempCheck,Check Mixer Temperature,Code,SP,Deadband,Code 1(Hi) 2(Low) 3(Between),-,-,-,-
+211,ST_QC_TeST,QC Test Mixed Product,Turbine Speed,Scrapper Speed,Timer SP,-,-,-,-,-
+212,ST_Transfer,Transfer MainMixer and PreMixer To StorageTank,Hi Shear Speed,Main Mixer Pump Speed,Pre Mixer Pump Speed,Mode 1=Cooling / 2=Bypass,Select Storage,-,-,-
+213,ST_Transfer_RE,Transfer MainMixer To StorageTank,Mode ,Lobe Pump Speed,-,-,-,-,-,-
+214,ST_Base_Check,Check Volume of Base,Volume (cm),-,-,-,-,-,-,-
+215,ST_Bulk_Check,Check Volume of Bulk,Volume (cm),-,-,-,-,-,-,-
+216,ST_Cooling_Plate,Cooldown Base,Temperature Setpoint (?C),Deadband,On/Off,,,,,-
+217,ST_OperMSG,Interface With Operator,Code,"Ans. (Yes=1 , No=2)",Number of Partial,Material ID NO.1,Material ID NO.2,Material ID NO.3,Code ,-
+218,ST_Shear (Add),Recirculation with Shear Pump,On/Off,Speed (RPM),Mode 1=Cooling / 2=Bypass,-,-,-,-,-
+219,ST_INLINE_DOSING,Dosing with Shear Pump,On/Off,-,-,-,-,-,-,-
+220,ST_ADD_T001,Dosin DD,Setpoint (kg),-,-,-,-,-,-,-
+221,ST_ADD_T002,Dosing EMAL,Setpoint (kg),-,-,-,-,-,-,-
+301,SP_01_DoseDIW,Dose Hot Water to Mixer,Setpoint (kg),-,-,-,-,-,-,-
+302,SP_01_Turbine,Agitator or Turbine,On/Off,Speed (RPM),-,-,-,-,-,-
+303,SP_01_WaitTime,Wait Mixing Time,Time Setpoint (Sec),-,-,-,-,-,-,-
+304,SP_01_AddPreweight,Add Preweight Material to Mixer,Material ID,Number of Partial,Index,,,,,-
+305,SP_01_OperMSG,Interface With Operator,Code,"Ans. (Yes=1 , No=2)",Number of Partial,Material ID NO.1,Material ID NO.2,Material ID NO.3,Code ,-
+401,SP_02_DoseDIW,Dose Hot Water to Mixer,Setpoint (kg),-,-,-,-,-,-,-
+402,SP_02_Homo,Homoginizer,On/Off,Speed (RPM),-,-,-,-,-,-
+403,SP_02_WaitTime,Wait Mixing Time,Time Setpoint (Sec),-,-,-,-,-,-,-
+404,SP_02_AddPreweight,Add Preweight Material to Mixer,Material ID,Number of Partial,Index,-,-,-,-,-
+405,SP_02_OperMSG,Interface With Operator,Code,"Ans. (Yes=1 , No=2)",Number of Partial,Material ID NO.1,Material ID NO.2,Material ID NO.3,Code ,-
+501,QC_DoseDIW,Dose Hot Water to Mixer,Setpoint (kg),-,-,-,-,-,-,-
+502,QC_Turbine,Agitator or Turbine,On/Off,Speed (RPM),-,-,-,-,-,-
+503,QC_WaitTime,Wait Mixing Time,Time Setpoint (Sec),-,-,-,-,-,-,-
+504,QC_AddPreweight,Add Preweight Material to Mixer,Material ID,Number of Partial,Index,-,-,-,-,-
+505,QC_OperMSG,Interface With Operator,Code,"Ans. (Yes=1 , No=2)",Number of Partial,Material ID NO.1,Material ID NO.2,Material ID NO.3,Code ,-
