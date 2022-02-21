@@ -1,7 +1,7 @@
 import pandas as pd
 import pyodbc
 
-data = pd.read_csv (r'D:\Work\foster\Report_DDEMAL\web\Book1.csv')   
+data = pd.read_csv (r'D:\Work\foster\Report_DDEMAL\web\Book.csv')   
 df = pd.DataFrame(data)
 
 print(df)
