@@ -75,7 +75,7 @@ def reportPreMixing(pdOrder):
     password = "p@ssw0rd"
     cnxn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER='+ server +';DATABASE='+database+';UID='+username+';PWD='+password)
     PreMixing = cnxn.cursor()
-    PreMixing.execute("SELECT RecordID, PD_ORDER, PhaseID, Status, Start_time, End_Time, SetPoint1, Actual1, SetPoint2, Actual2, SetPoint3, Actual3, SetPoint4, Actual4, SetPoint5, Actual5, SetPoint6, Actual6, SetPoint7, Actual7, SetPoint8, Actual8, User_Mixing ,DATEDIFF(second,Start_time,End_Time) as Time_Sec  FROM SCADA_DB.dbo.Mixing_Report mr  WHERE PhaseID > 200 AND PhaseID < 300 AND PD_ORDER = '" +pdOrder+ "' ORDER BY Start_time ASC")
+    PreMixing.execute("SELECT RecordID, PD_ORDER, PhaseID, Status, Start_time, End_Time, SetPoint1, Actual1, SetPoint2, Actual2, SetPoint3, Actual3, SetPoint4, Actual4, SetPoint5, Actual5, SetPoint6, Actual6, SetPoint7, Actual7, SetPoint8, Actual8, User_Mixing ,DATEDIFF(second,Start_time,End_Time) as Time_Sec  FROM SCADA_DB.dbo.Mixing_Report mr  WHERE PhaseID > 100 AND PhaseID < 200 AND PD_ORDER = '" +pdOrder+ "' ORDER BY Start_time ASC")
     
     cnxn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER='+ server +';DATABASE='+database+';UID='+username+';PWD='+password)
     Phase_Parameter = cnxn.cursor()
@@ -100,7 +100,7 @@ def reportMainMixing(pdOrder):
     password = "p@ssw0rd"
     cnxn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER='+ server +';DATABASE='+database+';UID='+username+';PWD='+password)
     MainMixing = cnxn.cursor()
-    MainMixing.execute("SELECT RecordID, PD_ORDER, PhaseID, Status, Start_time, End_Time, SetPoint1, Actual1, SetPoint2, Actual2, SetPoint3, Actual3, SetPoint4, Actual4, SetPoint5, Actual5, SetPoint6, Actual6, SetPoint7, Actual7, SetPoint8, Actual8, User_Mixing ,DATEDIFF(second,Start_time,End_Time) as Time_Sec  FROM SCADA_DB.dbo.Mixing_Report mr  WHERE PhaseID > 200 AND PhaseID < 300 AND PD_ORDER = '" +pdOrder+ "' ORDER BY Start_time ASC")
+    MainMixing.execute("SELECT RecordID, PD_ORDER, PhaseID, Status, Start_time, End_Time, SetPoint1, Actual1, SetPoint2, Actual2, SetPoint3, Actual3, SetPoint4, Actual4, SetPoint5, Actual5, SetPoint6, Actual6, SetPoint7, Actual7, SetPoint8, Actual8, User_Mixing ,DATEDIFF(second,Start_time,End_Time) as Time_Sec  FROM SCADA_DB.dbo.Mixing_Report mr  WHERE PhaseID > 1 AND PhaseID < 100 AND PD_ORDER = '" +pdOrder+ "' ORDER BY Start_time ASC")
     
     cnxn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER='+ server +';DATABASE='+database+';UID='+username+';PWD='+password)
     Phase_Parameter = cnxn.cursor()
@@ -151,7 +151,7 @@ def reportSidePOT_1(pdOrder):
     password = "p@ssw0rd"
     cnxn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER='+ server +';DATABASE='+database+';UID='+username+';PWD='+password)
     SidePOT_1 = cnxn.cursor()
-    SidePOT_1.execute("SELECT RecordID, PD_ORDER, PhaseID, Status, Start_time, End_Time, SetPoint1, Actual1, SetPoint2, Actual2, SetPoint3, Actual3, SetPoint4, Actual4, SetPoint5, Actual5, SetPoint6, Actual6, SetPoint7, Actual7, SetPoint8, Actual8, User_Mixing ,DATEDIFF(second,Start_time,End_Time) as Time_Sec  FROM SCADA_DB.dbo.Mixing_Report mr  WHERE PhaseID > 200 AND PhaseID < 300 AND PD_ORDER = '" +pdOrder+ "' ORDER BY Start_time ASC")
+    SidePOT_1.execute("SELECT RecordID, PD_ORDER, PhaseID, Status, Start_time, End_Time, SetPoint1, Actual1, SetPoint2, Actual2, SetPoint3, Actual3, SetPoint4, Actual4, SetPoint5, Actual5, SetPoint6, Actual6, SetPoint7, Actual7, SetPoint8, Actual8, User_Mixing ,DATEDIFF(second,Start_time,End_Time) as Time_Sec  FROM SCADA_DB.dbo.Mixing_Report mr  WHERE PhaseID > 300 AND PhaseID < 400 AND PD_ORDER = '" +pdOrder+ "' ORDER BY Start_time ASC")
     
     cnxn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER='+ server +';DATABASE='+database+';UID='+username+';PWD='+password)
     Phase_Parameter = cnxn.cursor()
@@ -176,7 +176,7 @@ def reportSidePOT_2(pdOrder):
     password = "p@ssw0rd"
     cnxn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER='+ server +';DATABASE='+database+';UID='+username+';PWD='+password)
     SidePOT_2 = cnxn.cursor()
-    SidePOT_2.execute("SELECT RecordID, PD_ORDER, PhaseID, Status, Start_time, End_Time, SetPoint1, Actual1, SetPoint2, Actual2, SetPoint3, Actual3, SetPoint4, Actual4, SetPoint5, Actual5, SetPoint6, Actual6, SetPoint7, Actual7, SetPoint8, Actual8, User_Mixing ,DATEDIFF(second,Start_time,End_Time) as Time_Sec  FROM SCADA_DB.dbo.Mixing_Report mr  WHERE PhaseID > 200 AND PhaseID < 300 AND PD_ORDER = '" +pdOrder+ "' ORDER BY Start_time ASC")
+    SidePOT_2.execute("SELECT RecordID, PD_ORDER, PhaseID, Status, Start_time, End_Time, SetPoint1, Actual1, SetPoint2, Actual2, SetPoint3, Actual3, SetPoint4, Actual4, SetPoint5, Actual5, SetPoint6, Actual6, SetPoint7, Actual7, SetPoint8, Actual8, User_Mixing ,DATEDIFF(second,Start_time,End_Time) as Time_Sec  FROM SCADA_DB.dbo.Mixing_Report mr  WHERE PhaseID > 400 AND PhaseID < 500 AND PD_ORDER = '" +pdOrder+ "' ORDER BY Start_time ASC")
     
     cnxn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER='+ server +';DATABASE='+database+';UID='+username+';PWD='+password)
     Phase_Parameter = cnxn.cursor()
