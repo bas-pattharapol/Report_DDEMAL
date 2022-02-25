@@ -35,12 +35,12 @@ def report():
     return render_template('report.html')
 
 
-@app.route('/Raw_Material/Raw_Material/<string:data>')
-def Raw_Material(data):
-    return render_template('RawMaterial.html',data=data)
+@app.route('/report/RawMaterial/<string:pdOrder>')
+def Raw_Material(pdOrder):
+    return render_template('reportRawMaterial.html',data=pdOrder)
 
-@app.route('/Raw_Material_API/Raw_Material_API/<string:data>')
-def Raw_Material_API(data):
+@app.route('/report/Raw_Material_API/<string:pdOrder>')
+def Raw_Material_API(pdOrder):
     host = "172.30.1.1"
     port = 1433
     database = "managedb"
@@ -48,7 +48,7 @@ def Raw_Material_API(data):
     passwd = "qwerty@2019"
     cnxn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER='+ host +';DATABASE='+database+';UID='+user+';PWD='+passwd)
     RM = cnxn.cursor()
-    RM.execute("SELECT * FROM [dbo].[View_RM_Process_tab] where RM_PD_ORDER = '" + data + "'")
+    RM.execute("SELECT * FROM [dbo].[View_RM_Process_tab] where RM_PD_ORDER = '" + pdOrder + "'")
     
     payload = []
     content = {}
@@ -60,11 +60,65 @@ def Raw_Material_API(data):
     #print(payload)
     return json.dumps({"data":payload}, cls = Encoder), 201
 
+@app.route('/report/Overview/<string:pdOrder>')
+def reportOverview(pdOrder):    
+    
+    return render_template('reportOverview.html',pdOrder=pdOrder)
 
+
+@app.route('/report/PreMixing/<string:pdOrder>')
+def reportPreMixing(pdOrder):    
+    server = "172.30.2.2"
+    port = 5432
+    database = "OEE_DB"
+    username = "sa"
+    password = "p@ssw0rd"
+    cnxn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER='+ server +';DATABASE='+database+';UID='+username+';PWD='+password)
+    PreMixing = cnxn.cursor()
+    PreMixing.execute("SELECT RecordID, PD_ORDER, PhaseID, Status, Start_time, End_Time, SetPoint1, Actual1, SetPoint2, Actual2, SetPoint3, Actual3, SetPoint4, Actual4, SetPoint5, Actual5, SetPoint6, Actual6, SetPoint7, Actual7, SetPoint8, Actual8, User_Mixing ,DATEDIFF(second,Start_time,End_Time) as Time_Sec  FROM SCADA_DB.dbo.Mixing_Report mr  WHERE PhaseID > 200 AND PhaseID < 300 AND PD_ORDER = '" +pdOrder+ "' ORDER BY Start_time ASC")
     
+    cnxn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER='+ server +';DATABASE='+database+';UID='+username+';PWD='+password)
+    Phase_Parameter = cnxn.cursor()
+    Phase_Parameter.execute("SELECT PhaseID ,PhaseName,Parameter1,Parameter2,Parameter3,Parameter4,Parameter5,Parameter6,Parameter7,Parameter8 FROM SCADA_DB.dbo.Phase_Parameter") 
     
+    Phase_Parameter_DIR = Phase_Parameter.fetchall()
+
+    insertObject = []
+    columnNames = [column[0] for column in Phase_Parameter.description]
+    for record in Phase_Parameter_DIR:
+        insertObject.append( dict( zip( columnNames , record ) ) )
+    print(insertObject)
+    
+    return render_template('reportPreMixing.html',pdOrder=pdOrder,Phase_Parameter=insertObject,PreMixing=PreMixing,len=len(Phase_Parameter_DIR))
+
+@app.route('/report/MainMixing/<string:pdOrder>')
+def reportMainMixing(pdOrder):    
+    server = "172.30.2.2"
+    port = 5432
+    database = "OEE_DB"
+    username = "sa"
+    password = "p@ssw0rd"
+    cnxn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER='+ server +';DATABASE='+database+';UID='+username+';PWD='+password)
+    MainMixing = cnxn.cursor()
+    MainMixing.execute("SELECT RecordID, PD_ORDER, PhaseID, Status, Start_time, End_Time, SetPoint1, Actual1, SetPoint2, Actual2, SetPoint3, Actual3, SetPoint4, Actual4, SetPoint5, Actual5, SetPoint6, Actual6, SetPoint7, Actual7, SetPoint8, Actual8, User_Mixing ,DATEDIFF(second,Start_time,End_Time) as Time_Sec  FROM SCADA_DB.dbo.Mixing_Report mr  WHERE PhaseID > 200 AND PhaseID < 300 AND PD_ORDER = '" +pdOrder+ "' ORDER BY Start_time ASC")
+    
+    cnxn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER='+ server +';DATABASE='+database+';UID='+username+';PWD='+password)
+    Phase_Parameter = cnxn.cursor()
+    Phase_Parameter.execute("SELECT PhaseID ,PhaseName,Parameter1,Parameter2,Parameter3,Parameter4,Parameter5,Parameter6,Parameter7,Parameter8 FROM SCADA_DB.dbo.Phase_Parameter") 
+    
+    Phase_Parameter_DIR = Phase_Parameter.fetchall()
+
+    insertObject = []
+    columnNames = [column[0] for column in Phase_Parameter.description]
+    for record in Phase_Parameter_DIR:
+        insertObject.append( dict( zip( columnNames , record ) ) )
+    print(insertObject)
+    
+    return render_template('reportMainMixing.html',pdOrder=pdOrder,Phase_Parameter=insertObject,MainMixing=MainMixing,len=len(Phase_Parameter_DIR))
+
+
 @app.route('/report/MixingStorage/<string:pdOrder>')
-def modeReport(pdOrder):
+def reportMixingStorage(pdOrder):
     server = "172.30.2.2"
     port = 5432
     database = "OEE_DB"
@@ -86,7 +140,58 @@ def modeReport(pdOrder):
         insertObject.append( dict( zip( columnNames , record ) ) )
     print(insertObject)
     
-    return render_template('report.html',pdOrder=pdOrder,Phase_Parameter=insertObject,MixingStorage=MixingStorage,len=len(Phase_Parameter_DIR))
+    return render_template('reportMixingStorage.html',pdOrder=pdOrder,Phase_Parameter=insertObject,MixingStorage=MixingStorage,len=len(Phase_Parameter_DIR))
+ 
+@app.route('/report/SidePOT_1/<string:pdOrder>')
+def reportSidePOT_1(pdOrder):    
+    server = "172.30.2.2"
+    port = 5432
+    database = "OEE_DB"
+    username = "sa"
+    password = "p@ssw0rd"
+    cnxn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER='+ server +';DATABASE='+database+';UID='+username+';PWD='+password)
+    SidePOT_1 = cnxn.cursor()
+    SidePOT_1.execute("SELECT RecordID, PD_ORDER, PhaseID, Status, Start_time, End_Time, SetPoint1, Actual1, SetPoint2, Actual2, SetPoint3, Actual3, SetPoint4, Actual4, SetPoint5, Actual5, SetPoint6, Actual6, SetPoint7, Actual7, SetPoint8, Actual8, User_Mixing ,DATEDIFF(second,Start_time,End_Time) as Time_Sec  FROM SCADA_DB.dbo.Mixing_Report mr  WHERE PhaseID > 200 AND PhaseID < 300 AND PD_ORDER = '" +pdOrder+ "' ORDER BY Start_time ASC")
+    
+    cnxn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER='+ server +';DATABASE='+database+';UID='+username+';PWD='+password)
+    Phase_Parameter = cnxn.cursor()
+    Phase_Parameter.execute("SELECT PhaseID ,PhaseName,Parameter1,Parameter2,Parameter3,Parameter4,Parameter5,Parameter6,Parameter7,Parameter8 FROM SCADA_DB.dbo.Phase_Parameter") 
+    
+    Phase_Parameter_DIR = Phase_Parameter.fetchall()
+
+    insertObject = []
+    columnNames = [column[0] for column in Phase_Parameter.description]
+    for record in Phase_Parameter_DIR:
+        insertObject.append( dict( zip( columnNames , record ) ) )
+    print(insertObject)
+    
+    return render_template('reportSidePOT_1.html',pdOrder=pdOrder,Phase_Parameter=insertObject,SidePOT_1=SidePOT_1,len=len(Phase_Parameter_DIR))
+
+@app.route('/report/SidePOT_2/<string:pdOrder>')
+def reportSidePOT_2(pdOrder):    
+    server = "172.30.2.2"
+    port = 5432
+    database = "OEE_DB"
+    username = "sa"
+    password = "p@ssw0rd"
+    cnxn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER='+ server +';DATABASE='+database+';UID='+username+';PWD='+password)
+    SidePOT_2 = cnxn.cursor()
+    SidePOT_2.execute("SELECT RecordID, PD_ORDER, PhaseID, Status, Start_time, End_Time, SetPoint1, Actual1, SetPoint2, Actual2, SetPoint3, Actual3, SetPoint4, Actual4, SetPoint5, Actual5, SetPoint6, Actual6, SetPoint7, Actual7, SetPoint8, Actual8, User_Mixing ,DATEDIFF(second,Start_time,End_Time) as Time_Sec  FROM SCADA_DB.dbo.Mixing_Report mr  WHERE PhaseID > 200 AND PhaseID < 300 AND PD_ORDER = '" +pdOrder+ "' ORDER BY Start_time ASC")
+    
+    cnxn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER='+ server +';DATABASE='+database+';UID='+username+';PWD='+password)
+    Phase_Parameter = cnxn.cursor()
+    Phase_Parameter.execute("SELECT PhaseID ,PhaseName,Parameter1,Parameter2,Parameter3,Parameter4,Parameter5,Parameter6,Parameter7,Parameter8 FROM SCADA_DB.dbo.Phase_Parameter") 
+    
+    Phase_Parameter_DIR = Phase_Parameter.fetchall()
+
+    insertObject = []
+    columnNames = [column[0] for column in Phase_Parameter.description]
+    for record in Phase_Parameter_DIR:
+        insertObject.append( dict( zip( columnNames , record ) ) )
+    print(insertObject)
+    
+    return render_template('reportSidePOT_2.html',pdOrder=pdOrder,Phase_Parameter=insertObject,SidePOT_2=SidePOT_2,len=len(Phase_Parameter_DIR))
+
  
 @app.route('/batch_report_API' ,methods=["GET", "POST"])
 def batch_report_API():
