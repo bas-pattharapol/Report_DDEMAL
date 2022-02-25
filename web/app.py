@@ -63,7 +63,7 @@ def Raw_Material_API(data):
 
     
     
-@app.route('/report/<string:pdOrder>')
+@app.route('/report/ST_Report/<string:pdOrder>')
 def modeReport(pdOrder):
     server = "172.30.2.2"
     port = 5432
@@ -86,7 +86,7 @@ def modeReport(pdOrder):
         insertObject.append( dict( zip( columnNames , record ) ) )
     print(insertObject)
     
-    return render_template('report.html',pdOrder=pdOrder,Phase_Parameter=insertObject,ST_Report=ST_Report,ST_Report1=ST_Report,len=len(Phase_Parameter_DIR),len1=len(Phase_Parameter_DIR))
+    return render_template('report.html',pdOrder=pdOrder,Phase_Parameter=insertObject,ST_Report=ST_Report,len=len(Phase_Parameter_DIR))
  
 @app.route('/batch_report_API' ,methods=["GET", "POST"])
 def batch_report_API():
