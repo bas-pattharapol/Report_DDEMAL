@@ -37,7 +37,7 @@ def report():
 
 @app.route('/report/RawMaterial/<string:pdOrder>')
 def Raw_Material(pdOrder):
-    return render_template('reportRawMaterial.html',data=pdOrder)
+    return render_template('reportRawMaterial.html',pdOrder=pdOrder)
 
 @app.route('/report/Raw_Material_API/<string:pdOrder>')
 def Raw_Material_API(pdOrder):
@@ -191,6 +191,11 @@ def reportSidePOT_2(pdOrder):
     print(insertObject)
     
     return render_template('reportSidePOT_2.html',pdOrder=pdOrder,Phase_Parameter=insertObject,SidePOT_2=SidePOT_2,len=len(Phase_Parameter_DIR))
+
+@app.route('/report/QC/<string:pdOrder>')
+def reportQC(pdOrder):    
+    
+    return render_template('reportQC.html',pdOrder=pdOrder)
 
  
 @app.route('/batch_report_API' ,methods=["GET", "POST"])
