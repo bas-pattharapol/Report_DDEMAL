@@ -63,7 +63,7 @@ def Raw_Material_API(data):
 
     
     
-@app.route('/report/ST_Report/<string:pdOrder>')
+@app.route('/report/MixingStorage/<string:pdOrder>')
 def modeReport(pdOrder):
     server = "172.30.2.2"
     port = 5432
@@ -71,8 +71,8 @@ def modeReport(pdOrder):
     username = "sa"
     password = "p@ssw0rd"
     cnxn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER='+ server +';DATABASE='+database+';UID='+username+';PWD='+password)
-    ST_Report = cnxn.cursor()
-    ST_Report.execute("SELECT RecordID, PD_ORDER, PhaseID, Status, Start_time, End_Time, SetPoint1, Actual1, SetPoint2, Actual2, SetPoint3, Actual3, SetPoint4, Actual4, SetPoint5, Actual5, SetPoint6, Actual6, SetPoint7, Actual7, SetPoint8, Actual8, User_Mixing ,DATEDIFF(second,Start_time,End_Time) as Time_Sec  FROM SCADA_DB.dbo.Mixing_Report mr  WHERE PhaseID > 200 AND PhaseID < 300 AND PD_ORDER = '" +pdOrder+ "' ORDER BY Start_time ASC")
+    MixingStorage = cnxn.cursor()
+    MixingStorage.execute("SELECT RecordID, PD_ORDER, PhaseID, Status, Start_time, End_Time, SetPoint1, Actual1, SetPoint2, Actual2, SetPoint3, Actual3, SetPoint4, Actual4, SetPoint5, Actual5, SetPoint6, Actual6, SetPoint7, Actual7, SetPoint8, Actual8, User_Mixing ,DATEDIFF(second,Start_time,End_Time) as Time_Sec  FROM SCADA_DB.dbo.Mixing_Report mr  WHERE PhaseID > 200 AND PhaseID < 300 AND PD_ORDER = '" +pdOrder+ "' ORDER BY Start_time ASC")
     
     cnxn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER='+ server +';DATABASE='+database+';UID='+username+';PWD='+password)
     Phase_Parameter = cnxn.cursor()
@@ -86,7 +86,7 @@ def modeReport(pdOrder):
         insertObject.append( dict( zip( columnNames , record ) ) )
     print(insertObject)
     
-    return render_template('report.html',pdOrder=pdOrder,Phase_Parameter=insertObject,ST_Report=ST_Report,len=len(Phase_Parameter_DIR))
+    return render_template('report.html',pdOrder=pdOrder,Phase_Parameter=insertObject,MixingStorage=MixingStorage,len=len(Phase_Parameter_DIR))
  
 @app.route('/batch_report_API' ,methods=["GET", "POST"])
 def batch_report_API():
