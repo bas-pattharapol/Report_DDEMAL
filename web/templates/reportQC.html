@@ -115,6 +115,65 @@
         border: 1px solid #ccc;
         border-top: none;
     }
+    
+    .track {
+        position: relative;
+        background-color: #ddd;
+        height: 7px;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+    }
+    
+    .track .step {
+        -webkit-box-flex: 1;
+        -ms-flex-positive: 1;
+        flex-grow: 1;
+        width: 30%;
+        height: 10px;
+        margin-top: -38px;
+        text-align: center;
+        position: relative
+    }
+    
+    .track .step.active:before {
+        background: #FF5722
+    }
+    
+    .track .step::before {
+        height: 7px;
+        position: absolute;
+        content: "";
+        width: 100%;
+        left: 0;
+        top: 38px
+    }
+    
+    .track .step.active .icon {
+        background: #ee5435;
+        color: #fff
+    }
+    
+    .track .icon {
+        display: inline-block;
+        width: 80px;
+        height: 80px;
+        line-height: 80px;
+        position: relative;
+        border-radius: 100%;
+        background: #ddd
+    }
+    
+    .track .step.active .text {
+        font-weight: 600;
+        color: #000
+    }
+    
+    .track .text {
+        display: block;
+        margin-top: 7px;
+        font-size: 18px;
+    }
 </style>
 
 
@@ -166,7 +225,81 @@
 
 
             <h3>QC</h3>
+            <br>
+            <div class="row">
+                <div class="col-md-1"></div>
+                <div class="col-md-10">
+                    <div class="track">
+                        <div class="step active"> <span class="icon"> <i class="fa fa-check"></i> </span> <span class="text">RECEIVED BULK</span> <span class="text">2022-03-01 12:00:00</span></div>
+                        <div class="step active"> <span class="icon"> <i class="fa fa-user"></i> </span> <span class="text"> QC PASS</span> <span class="text">2022-03-01 13:00:00</span></div>
+                        <div class="step "> <span class="icon"> <i class="fa fa-user"></i> </span> <span class="text"> QC HOLD</span> <span class="text">--:--:--</span></div>
+                        <div class="step"> <span class="icon"> <i class="fa fa-user"></i> </span> <span class="text">QC REJECT </span><span class="text">--:--:--</span> </div>
+                    </div>
+                </div>
+                <div class="col-md-1"></div>
+            </div>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
 
+            <section class="content">
+                <div class="row">
+                    <div class="col-md-2"></div>
+                    <div class="col-md-8">
+                        <div class="box">
+                            <div class="box-body">
+
+
+                                <div class="table-responsive">
+
+                                    <table cellspacing="0" id="example1" class="display" style="text-align: center; width: 100% ">
+                                        <thead>
+                                            <tr>
+
+
+                                                <th style="text-align: center;">Product Name</th>
+                                                <th style="text-align: center;">Lot No.</th>
+                                                <th style="text-align: center;">BAY</th>
+                                                <th style="text-align: center;">Tank S/N</th>
+                                                <th style="text-align: center;">Status</th>
+                                                <th style="text-align: center;">DateTime</th>
+                                                <th style="text-align: center;">User</th>
+
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>BES-LH(B)</td>
+                                                <td>1704220010</td>
+                                                <td>10</td>
+                                                <td>6</td>
+                                                <td>RECEIVED BULK</td>
+                                                <td>2022-03-01 12:00:00</td>
+                                                <td>Admin</td>
+                                            </tr>
+                                            <tr>
+                                                <td>BES-LH(B)</td>
+                                                <td>1704220010</td>
+                                                <td>10</td>
+                                                <td>6</td>
+                                                <td>QC PASS</td>
+                                                <td>2022-03-01 13:00:00</td>
+                                                <td>Admin</td>
+                                            </tr>
+                                        </tbody>
+
+
+                                    </table>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2"></div>
+            </section>
 
 
 
@@ -176,61 +309,61 @@
 
 
             <!-- /.content -->
+            </div>
+
+            <!-- /.content-wrapper -->
+
+
+
         </div>
-
-        <!-- /.content-wrapper -->
-
-
-
-    </div>
-    <!-- ./wrapper -->
-    <script>
-        function openCity(evt, cityName) {
-            var i, tabcontent, tablinks;
-            tabcontent = document.getElementsByClassName("tabcontent");
-            for (i = 0; i < tabcontent.length; i++) {
-                tabcontent[i].style.display = "none";
+        <!-- ./wrapper -->
+        <script>
+            function openCity(evt, cityName) {
+                var i, tabcontent, tablinks;
+                tabcontent = document.getElementsByClassName("tabcontent");
+                for (i = 0; i < tabcontent.length; i++) {
+                    tabcontent[i].style.display = "none";
+                }
+                tablinks = document.getElementsByClassName("tablinks");
+                for (i = 0; i < tablinks.length; i++) {
+                    tablinks[i].className = tablinks[i].className.replace(" active", "");
+                }
+                document.getElementById(cityName).style.display = "block";
+                evt.currentTarget.className += " active";
             }
-            tablinks = document.getElementsByClassName("tablinks");
-            for (i = 0; i < tablinks.length; i++) {
-                tablinks[i].className = tablinks[i].className.replace(" active", "");
-            }
-            document.getElementById(cityName).style.display = "block";
-            evt.currentTarget.className += " active";
-        }
-    </script>
+        </script>
 
-    <!-- jQuery 3 -->
+        <!-- jQuery 3 -->
 
-    <!-- jQuery UI 1.11.4 -->
+        <!-- jQuery UI 1.11.4 -->
 
-    <!-- Bootstrap 3.3.7 -->
-    <script src="{{ url_for('static', filename='bower_components/bootstrap/dist/js/bootstrap.min.js')}}"></script>
-    <!-- Select2 -->
-    <script src="{{ url_for('static', filename='bower_components/select2/dist/js/select2.full.min.js')}}"></script>
-    <!-- InputMask -->
-    <script src="{{ url_for('static', filename='plugins/input-mask/jquery.inputmask.js')}}"></script>
-    <script src="{{ url_for('static', filename='plugins/input-mask/jquery.inputmask.date.extensions.js')}}"></script>
-    <script src="{{ url_for('static', filename='plugins/input-mask/jquery.inputmask.extensions.js')}}"></script>
-    <!-- date-range-picker -->
-    <script src="{{ url_for('static', filename='bower_components/moment/min/moment.min.js')}}"></script>
-    <script src="{{ url_for('static', filename='bower_components/bootstrap-daterangepicker/daterangepicker.js')}}"></script>
-    <!-- bootstrap datepicker -->
-    <script src="{{ url_for('static', filename='bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js')}}"></script>
-    <!-- bootstrap color picker -->
-    <script src="{{ url_for('static', filename='bower_components/bootstrap-colorpicker/dist/js/bootstrap-colorpicker.min.js')}}"></script>
-    <!-- bootstrap time picker -->
-    <script src="{{ url_for('static', filename='plugins/timepicker/bootstrap-timepicker.min.js')}}"></script>
-    <!-- SlimScroll -->
-    <script src="{{ url_for('static', filename='bower_components/jquery-slimscroll/jquery.slimscroll.min.js')}}"></script>
-    <!-- iCheck 1.0.1 -->
-    <script src="{{ url_for('static', filename='plugins/iCheck/icheck.min.js')}}"></script>
-    <!-- FastClick -->
-    <script src="{{ url_for('static', filename='bower_components/fastclick/lib/fastclick.js')}}"></script>
-    <!-- AdminLTE App -->
-    <script src="{{ url_for('static', filename='dist/js/adminlte.min.js')}}"></script>
-    <!-- AdminLTE for demo purposes -->
-    <script src="{{ url_for('static', filename='dist/js/demo.js')}}"></script>
+        <!-- Bootstrap 3.3.7 -->
+        <script src="{{ url_for('static', filename='bower_components/bootstrap/dist/js/bootstrap.min.js')}}"></script>
+        <!-- Select2 -->
+        <script src="{{ url_for('static', filename='bower_components/select2/dist/js/select2.full.min.js')}}"></script>
+        <!-- InputMask -->
+        <script src="{{ url_for('static', filename='plugins/input-mask/jquery.inputmask.js')}}"></script>
+        <script src="{{ url_for('static', filename='plugins/input-mask/jquery.inputmask.date.extensions.js')}}"></script>
+        <script src="{{ url_for('static', filename='plugins/input-mask/jquery.inputmask.extensions.js')}}"></script>
+        <!-- date-range-picker -->
+        <script src="{{ url_for('static', filename='bower_components/moment/min/moment.min.js')}}"></script>
+        <script src="{{ url_for('static', filename='bower_components/bootstrap-daterangepicker/daterangepicker.js')}}"></script>
+        <!-- bootstrap datepicker -->
+        <script src="{{ url_for('static', filename='bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js')}}"></script>
+        <!-- bootstrap color picker -->
+        <script src="{{ url_for('static', filename='bower_components/bootstrap-colorpicker/dist/js/bootstrap-colorpicker.min.js')}}"></script>
+        <!-- bootstrap time picker -->
+        <script src="{{ url_for('static', filename='plugins/timepicker/bootstrap-timepicker.min.js')}}"></script>
+        <!-- SlimScroll -->
+        <script src="{{ url_for('static', filename='bower_components/jquery-slimscroll/jquery.slimscroll.min.js')}}"></script>
+        <!-- iCheck 1.0.1 -->
+        <script src="{{ url_for('static', filename='plugins/iCheck/icheck.min.js')}}"></script>
+        <!-- FastClick -->
+        <script src="{{ url_for('static', filename='bower_components/fastclick/lib/fastclick.js')}}"></script>
+        <!-- AdminLTE App -->
+        <script src="{{ url_for('static', filename='dist/js/adminlte.min.js')}}"></script>
+        <!-- AdminLTE for demo purposes -->
+        <script src="{{ url_for('static', filename='dist/js/demo.js')}}"></script>
 
 
 </body>
