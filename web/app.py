@@ -231,7 +231,7 @@ def batch_report_API():
 @app.route('/QC_report')
 def QC_report():    
     return render_template('QC_report.html') 
-#ss
+#ss0000
 @app.route('/QC_report_API',methods=["GET", "POST"])
 def QC_report_API():    
     global count
