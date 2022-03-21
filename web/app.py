@@ -234,33 +234,34 @@ def QC_report():
 #ss0000
 @app.route('/QC_report_API',methods=["GET", "POST"])
 def QC_report_API():    
-    global count
-    q = request.args.get('q')
-    
-    print(q)
+ 
+    server = "172.30.2.2"
+    port = 5432
+    database = "OEE_DB"
+    username = "sa"
+    password = "p@ssw0rd"
+    cnxn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER='+ server +';DATABASE='+database+';UID='+username+';PWD='+password)
+    qc_report = cnxn.cursor()
+    qc_report.execute("SELECT * FROM SCADA_DB.dbo.QC_Process")
+    """SELECT TOP(1) Product_Name , PD_Order ,[Lot_No.] , [Tank_S/N] 
+, (SELECT TOP(1) DateTime FROM  SCADA_DB.dbo.QC_Process WHERE PD_Order = '80104351' ORDER BY [DateTime] ASC ) AS QC_START 
+, (SELECT TOP(1) DateTime FROM  SCADA_DB.dbo.QC_Process WHERE PD_Order = '80104351' ORDER BY [DateTime] DESC ) AS QC_FINISH 
+, DATEDIFF(MINUTE,(SELECT TOP(1) DateTime FROM  SCADA_DB.dbo.QC_Process WHERE PD_Order = '80104351' ORDER BY [DateTime] ASC ),(SELECT TOP(1) DateTime FROM  SCADA_DB.dbo.QC_Process WHERE PD_Order = '80104351' ORDER BY [DateTime] DESC )) as [MIN]
+FROM  SCADA_DB.dbo.QC_Process WHERE PD_Order = '80104351';
 
-    if request.method == "POST":
-        count+=1
-        return redirect(url_for('ReportOEE'))
-    else:
-        server = "172.30.2.2"
-        port = 5432
-        database = "OEE_DB"
-        username = "sa"
-        password = "p@ssw0rd"
-        cnxn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER='+ server +';DATABASE='+database+';UID='+username+';PWD='+password)
-        qc_report = cnxn.cursor()
-        qc_report.execute("SELECT * FROM SCADA_DB.dbo.QC_Process")
-        
+    Returns:
+        _type_: _description_
+    """
     
-        payload = []
+
+    payload = []
+    content = {}
+    for result in qc_report:
+        content = {'Product_Name': str(result[1]), 'PD_Order': result[2],'Lot_No': result[3],'BAY': result[4],'Tank_SN': result[5],'Status': str(result[6]),'Action': str(result[9]),'DateTime': str(result[7]),'User': str(result[8])}
+        payload.append(content)
         content = {}
-        for result in qc_report:
-            content = {'Product_Name': str(result[1]), 'PD_Order': result[2],'Lot_No': result[3],'BAY': result[4],'Tank_SN': result[5],'Status': str(result[6]),'Action': str(result[9]),'DateTime': str(result[7]),'User': str(result[8])}
-            payload.append(content)
-            content = {}
-        #print(payload)
-        return json.dumps({"data":payload}, cls = Encoder), 201
+    #print(payload)
+    return json.dumps({"data":payload}, cls = Encoder), 201
 
         
 if __name__ == "__main__":
