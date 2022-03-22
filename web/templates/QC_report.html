@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>batch_report</title>
+    <title>QC Report</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!-- Bootstrap 3.3.7 -->
@@ -90,12 +90,12 @@
         <div class="content">
             <section class="content-header">
                 <h1>
-                    Batch Report
+                    QC Report
                     <small>Control panel</small>
                 </h1>
                 <ol class="breadcrumb">
                     <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-                    <li class="active">Batch Report</li>
+                    <li class="active">QC Report</li>
                 </ol>
             </section>
             <section class="content">
@@ -103,23 +103,28 @@
                     <div class="col-md-12">
                         <div class="box">
                             <div class="box-body">
+                                <div class="row">
 
+                                    <div class="col-md-12">
+                                        <div class="table-responsive" style="text-align: right;">
+                                            <table border="0" cellspacing="5" cellpadding="5">
+                                                <tbody>
+                                                    <tr>
+                                                        <td>Start Time : &nbsp;</td>
+                                                        <td><input type="text" id="min" name="min"> &nbsp;&nbsp;</td>
 
+                                                        <td>To : &nbsp;</td>
+                                                        <td><input type="text" id="max" name="max"></td>
+                                                    </tr>
+
+                                                </tbody>
+                                            </table>
+                                            <br>
+                                        </div>
+                                    </div>
+                                </div>
                                 <div class="table-responsive">
 
-                                    <table border="0" cellspacing="5" cellpadding="5" class="datetex">
-                                        <tbody>
-                                            <tr>
-                                                <td>Start Time : &nbsp;</td>
-                                                <td><input type="text" id="min" name="min"> &nbsp;&nbsp;</td>
-
-                                                <td>To : &nbsp;</td>
-                                                <td><input type="text" id="max" name="max"></td>
-                                            </tr>
-
-                                        </tbody>
-                                    </table>
-                                    <br>
 
                                     <table cellspacing="0" id="example" class="display" style="text-align: center; width: 100% ">
                                         <thead>
@@ -129,6 +134,7 @@
                                                 <th style="text-align: center;">PRODUCT</th>
                                                 <th style="text-align: center;">ORDER</th>
                                                 <th style="text-align: center;">LOT</th>
+                                                <th style="text-align: center;">BAY</th>
                                                 <th style="text-align: center;">NO.</th>
                                                 <th style="text-align: center;">QC_START</th>
                                                 <th style="text-align: center;">QC_FINISH</th>
@@ -165,7 +171,7 @@
                     var min = minDate.val();
                     var max = maxDate.val();
 
-                    var dateString = data[4];
+                    var dateString = data[5];
                     //console.log(dateString)
                     var dateTimeString = dateString;
 
@@ -214,13 +220,15 @@
                     }, {
                         "data": "Lot_No"
                     }, {
+                        "data": "BAY"
+                    }, {
                         "data": "Tank_SN"
                     }, {
-                        "data": "DateTime"
+                        "data": "QC_START"
                     }, {
-                        "data": "DateTime"
+                        "data": "QC_FINISH"
                     }, {
-                        "data": "DateTime"
+                        "data": "QC_TIME"
                     }, {
                         "data": "User"
                     }, ],

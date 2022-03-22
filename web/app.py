@@ -241,25 +241,30 @@ def QC_report_API():
     username = "sa"
     password = "p@ssw0rd"
     cnxn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER='+ server +';DATABASE='+database+';UID='+username+';PWD='+password)
-    qc_report = cnxn.cursor()
-    qc_report.execute("SELECT * FROM SCADA_DB.dbo.QC_Process")
-    """SELECT TOP(1) Product_Name , PD_Order ,[Lot_No.] , [Tank_S/N] 
-, (SELECT TOP(1) DateTime FROM  SCADA_DB.dbo.QC_Process WHERE PD_Order = '80104351' ORDER BY [DateTime] ASC ) AS QC_START 
-, (SELECT TOP(1) DateTime FROM  SCADA_DB.dbo.QC_Process WHERE PD_Order = '80104351' ORDER BY [DateTime] DESC ) AS QC_FINISH 
-, DATEDIFF(MINUTE,(SELECT TOP(1) DateTime FROM  SCADA_DB.dbo.QC_Process WHERE PD_Order = '80104351' ORDER BY [DateTime] ASC ),(SELECT TOP(1) DateTime FROM  SCADA_DB.dbo.QC_Process WHERE PD_Order = '80104351' ORDER BY [DateTime] DESC )) as [MIN]
-FROM  SCADA_DB.dbo.QC_Process WHERE PD_Order = '80104351';
-
-    Returns:
-        _type_: _description_
-    """
-    
-
+    PD_QC = cnxn.cursor()
+    PD_QC.execute("SELECT DISTINCT PD_Order FROM SCADA_DB.dbo.QC_Process")
     payload = []
-    content = {}
-    for result in qc_report:
-        content = {'Product_Name': str(result[1]), 'PD_Order': result[2],'Lot_No': result[3],'BAY': result[4],'Tank_SN': result[5],'Status': str(result[6]),'Action': str(result[9]),'DateTime': str(result[7]),'User': str(result[8])}
-        payload.append(content)
+    for i in  PD_QC:
+        print(i[0])
+        cnxn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER='+ server +';DATABASE='+database+';UID='+username+';PWD='+password)
+        qc_report = cnxn.cursor()
+        qc_report.execute("""
+                          SELECT TOP(1) Product_Name  , PD_Order , [Lot_No.] ,BAY ,[Tank_S/N]   , (SELECT TOP(1) [DateTime] 
+                            FROM SCADA_DB.dbo.QC_Process WHERE [Action] = 'QC_RECEIVE' AND  PD_Order = ? ) As QC_START 
+                            , (SELECT TOP(1) [DateTime] FROM SCADA_DB.dbo.QC_Process WHERE ([Action] = 'QC_PASS' OR [Action] = 'QC_REJECT') AND PD_Order = ? ) As QC_FINISH
+                            , DATEDIFF(MINUTE , (SELECT TOP(1) [DateTime] FROM SCADA_DB.dbo.QC_Process WHERE [Action] = 'QC_RECEIVE' AND  PD_Order = ? ) ,
+                            (SELECT TOP(1) [DateTime] FROM SCADA_DB.dbo.QC_Process WHERE ([Action] = 'QC_PASS' OR [Action] = 'QC_REJECT') AND PD_Order = ? )) ,
+                            [User] 
+                            FROM SCADA_DB.dbo.QC_Process WHERE PD_Order = ? 
+                          """,(i[0],i[0],i[0],i[0],i[0]))
+       
+
+        
         content = {}
+        for result in qc_report:
+            content = {'Product_Name': str(result[0]), 'PD_Order': result[1],'Lot_No': result[2],'BAY': result[3],'Tank_SN': result[4],'QC_START': str(result[5]),'QC_FINISH': str(result[6]),'QC_TIME': str(result[7]),'User': str(result[8])}
+            payload.append(content)
+            content = {}
     #print(payload)
     return json.dumps({"data":payload}, cls = Encoder), 201
 
