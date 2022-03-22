@@ -230,10 +230,14 @@
                 <div class="col-md-1"></div>
                 <div class="col-md-10">
                     <div class="track">
-                        <div class="step active"> <span class="icon"> <i class="fa fa-check"></i> </span> <span class="text">RECEIVED BULK</span> <span class="text">2022-03-01 12:00:00</span></div>
-                        <div class="step active"> <span class="icon"> <i class="fa fa-user"></i> </span> <span class="text"> QC PASS</span> <span class="text">2022-03-01 13:00:00</span></div>
-                        <div class="step "> <span class="icon"> <i class="fa fa-user"></i> </span> <span class="text"> QC HOLD</span> <span class="text">--:--:--</span></div>
-                        <div class="step"> <span class="icon"> <i class="fa fa-user"></i> </span> <span class="text">QC REJECT </span><span class="text">--:--:--</span> </div>
+                        {% for j in PD_QC2%}
+                        <div class="step active"> <span class="icon"> <i class="fa fa-check"></i> </span> <span class="text">{{j[9]}}</span> <span class="text">{{j[7]}}</span></div>
+
+                        {%endfor%} {%if dataPD[dataPD_len] == 'QC_PASS' or dataPD[dataPD_len] == 'QC_REJECT'%} {%else%}
+                        <div class="step"> <span class="icon"> <i class="fa fa-user"></i> </span> <span class="text">---</span> <span class="text">--:--:--</span></div>
+
+                        {%endif%}
+
                     </div>
                 </div>
                 <div class="col-md-1"></div>
@@ -264,31 +268,24 @@
                                                 <th style="text-align: center;">Lot No.</th>
                                                 <th style="text-align: center;">BAY</th>
                                                 <th style="text-align: center;">Tank S/N</th>
-                                                <th style="text-align: center;">Status</th>
+                                                <th style="text-align: center;">Action</th>
                                                 <th style="text-align: center;">DateTime</th>
                                                 <th style="text-align: center;">User</th>
 
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            {% for i in PD_QC%}
                                             <tr>
-                                                <td>BES-LH(B)</td>
-                                                <td>1704220010</td>
-                                                <td>10</td>
-                                                <td>6</td>
-                                                <td>RECEIVED BULK</td>
-                                                <td>2022-03-01 12:00:00</td>
-                                                <td>Admin</td>
+                                                <td>{{i[1]}}</td>
+                                                <td>{{i[3]}}</td>
+                                                <td>{{i[4]}}</td>
+                                                <td>{{i[5]}}</td>
+                                                <td>{{i[9]}}</td>
+                                                <td>{{i[7]}}</td>
+                                                <td>{{i[8]}}</td>
                                             </tr>
-                                            <tr>
-                                                <td>BES-LH(B)</td>
-                                                <td>1704220010</td>
-                                                <td>10</td>
-                                                <td>6</td>
-                                                <td>QC PASS</td>
-                                                <td>2022-03-01 13:00:00</td>
-                                                <td>Admin</td>
-                                            </tr>
+                                            {%endfor%}
                                         </tbody>
 
 
@@ -300,21 +297,9 @@
                     </div>
                     <div class="col-md-2"></div>
             </section>
-
-
-
-
-
-
-
-
             <!-- /.content -->
             </div>
-
             <!-- /.content-wrapper -->
-
-
-
         </div>
         <!-- ./wrapper -->
         <script>

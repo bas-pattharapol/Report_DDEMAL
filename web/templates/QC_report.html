@@ -47,7 +47,12 @@
     <script src="{{ url_for('static', filename='table/jquery.dataTables.min.js') }}"></script>
     <script src="{{ url_for('static', filename='table/moment.min.js') }}"></script>
     <script src="{{ url_for('static', filename='table/dataTables.dateTime.min.js') }}"></script>
-
+    <script src="https://cdn.datatables.net/buttons/2.2.2/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.print.min.js"></script>
 
 </head>
 <style>
@@ -61,6 +66,27 @@
     td {
         font-size: 14px;
         margin: 0;
+    }
+    
+    #example_filter input {
+        border-radius: 10px;
+        float: center;
+        text-align: center;
+    }
+    
+    .dataTables_wrapper .dt-buttons {
+        float: none;
+        text-align: right;
+        padding-bottom: 10px;
+        border-radius: 8px;
+        font-size: 16px;
+        top: 20px;
+    }
+    
+    .dataTables_length,
+    .dataTables_length select {
+        padding-top: 45px;
+        font-size: 14px;
     }
 </style>
 
@@ -102,27 +128,31 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="box">
-                            <div class="box-body">
-                                <div class="row">
 
-                                    <div class="col-md-12">
-                                        <div class="table-responsive" style="text-align: right;">
-                                            <table border="0" cellspacing="5" cellpadding="5">
-                                                <tbody>
-                                                    <tr>
-                                                        <td>Start Time : &nbsp;</td>
-                                                        <td><input type="text" id="min" name="min"> &nbsp;&nbsp;</td>
 
-                                                        <td>To : &nbsp;</td>
-                                                        <td><input type="text" id="max" name="max"></td>
-                                                    </tr>
+                            <div class="box-body" style="position:absolute;
+                            float: center;
+                            height:50px;
+                            width:70%;
+                            left:15%;
+                            top:11%;
+                            z-index:10;">
 
-                                                </tbody>
-                                            </table>
-                                            <br>
-                                        </div>
-                                    </div>
+                                <div class="col-md-2"></div>
+                                <div class="col-md-4">
+
+                                    <input type="text" id="min" name="min" class="form-control" placeholder="Start Date">
                                 </div>
+
+                                <div class="col-md-4">
+                                    <input type="text" id="max" name="max" class="form-control" placeholder="End Date">
+                                </div>
+                                <div class="col-md-2"></div>
+                            </div>
+
+                            <!--Container Ends Here-->
+                            <!--datatable div starts here-->
+                            <div style="margin-top: 10px">
                                 <div class="table-responsive">
 
 
@@ -130,9 +160,8 @@
                                         <thead>
                                             <tr>
 
-
-                                                <th style="text-align: center;">PRODUCT</th>
                                                 <th style="text-align: center;">ORDER</th>
+                                                <th style="text-align: center;">PRODUCT</th>
                                                 <th style="text-align: center;">LOT</th>
                                                 <th style="text-align: center;">BAY</th>
                                                 <th style="text-align: center;">NO.</th>
@@ -150,131 +179,146 @@
                             </div>
                         </div>
                     </div>
+                </div>
             </section>
             <!-- /.content -->
-            </div>
-            <!-- /.content-wrapper -->
-
-
-
         </div>
-        <!-- ./wrapper -->
-        <script>
-            var minDate, maxDate;
-            let minDate1, maxDate1;
-
-
-            // Custom filtering function which will search data in column four between two values
-            $.fn.dataTable.ext.search.push(
-                function(settings, data, dataIndex) {
-
-                    var min = minDate.val();
-                    var max = maxDate.val();
-
-                    var dateString = data[5];
-                    //console.log(dateString)
-                    var dateTimeString = dateString;
-
-                    var dateMomentObject = moment(dateTimeString, "YYYY-MM-DD HH:mm:ss"); // 1st argument - string, 2nd argument - format
-                    var date = dateMomentObject.toDate();
+        <!-- /.content-wrapper -->
 
 
 
-                    let date2 = new Date(date.getTime() + 3600E3 * 7);
+    </div>
+    <!-- ./wrapper -->
+    <script>
+        var minDate, maxDate;
+        let minDate1, maxDate1;
 
-                    //console.log(date2)
 
-                    console.log(date2)
-                    console.log(min)
-                    console.log(max)
+        // Custom filtering function which will search data in column four between two values
+        $.fn.dataTable.ext.search.push(
+            function(settings, data, dataIndex) {
 
-                    if (
-                        (min === null && max === null) ||
-                        (min === null && date2 <= max) ||
-                        (min <= date2 && max === null) ||
-                        (min <= date2 && date2 <= max)
+                var min = minDate.val();
+                var max = maxDate.val();
 
-                    ) {
-                        return true;
-                    }
-                    return false;
+                var dateString = data[5];
+                //console.log(dateString)
+                var dateTimeString = dateString;
+
+                var dateMomentObject = moment(dateTimeString, "YYYY-MM-DD HH:mm:ss"); // 1st argument - string, 2nd argument - format
+                var date = dateMomentObject.toDate();
+
+
+
+                let date2 = new Date(date.getTime() + 3600E3 * 7);
+
+                //console.log(date2)
+
+                console.log(date2)
+                console.log(min)
+                console.log(max)
+
+                if (
+                    (min === null && max === null) ||
+                    (min === null && date2 <= max) ||
+                    (min <= date2 && max === null) ||
+                    (min <= date2 && date2 <= max)
+
+                ) {
+                    return true;
                 }
-            );
+                return false;
+            }
+        );
 
-            $(document).ready(function() {
-                minDate = new DateTime($('#min'), {
-                    format: 'DD/MM/YYYY HH:mm:SS'
-                });
-                maxDate = new DateTime($('#max'), {
-                    format: 'DD/MM/YYYY HH:mm:SS'
-                });
-                var table = $('#example').DataTable({
+        $(document).ready(function() {
+            minDate = new DateTime($('#min'), {
+                format: 'DD/MM/YYYY HH:mm'
+            });
+            maxDate = new DateTime($('#max'), {
+                format: 'DD/MM/YYYY HH:mm'
+            });
+            var table = $('#example').DataTable({
 
-                    ajax: "/QC_report_API",
-                    "columns": [{
+                ajax: "/QC_report_API",
+                "columns": [{
 
-                        "data": "Product_Name",
+                    "data": "PD_Order",
+                    "fnCreatedCell": function(nTd, sData, oData, iRow, iCol) {
+                        $(nTd).html(" <div class='dropdown'>" +
+                            "<button class='btn btn-primary dropdown-toggle' type='button' data-toggle='dropdown'>" + oData.PD_Order +
+                            "</button>" +
+                            "<ul class='dropdown-menu'>" +
+                            "<a href='/report/QC/" + oData.PD_Order + "'>&nbsp;&nbsp; -> Detail</a></li>" +
+                            "</ul>" +
+                            "</div>");
+                    }
 
-                    }, {
-                        "data": "PD_Order"
-                    }, {
-                        "data": "Lot_No"
-                    }, {
-                        "data": "BAY"
-                    }, {
-                        "data": "Tank_SN"
-                    }, {
-                        "data": "QC_START"
-                    }, {
-                        "data": "QC_FINISH"
-                    }, {
-                        "data": "QC_TIME"
-                    }, {
-                        "data": "User"
-                    }, ],
-                    deferRender: true,
+                }, {
+                    "data": "Product_Name"
+                }, {
+                    "data": "Lot_No"
+                }, {
+                    "data": "BAY"
+                }, {
+                    "data": "Tank_SN"
+                }, {
+                    "data": "QC_START"
+                }, {
+                    "data": "QC_FINISH"
+                }, {
+                    "data": "QC_TIME"
+                }, {
+                    "data": "User"
+                }, ],
+                dom: 'lBfrtip',
+                buttons: [
+                    'excel', 'pdf', 'print'
+                ]
 
-                });
-                $('#min, #max').on('change', function() {
-                    table.draw();
-                });
 
-                // Add event listener for opening and closing details
+            });
 
-            });;
-        </script>
+            $('#min, #max').on('change', function() {
+                table.draw();
+            });
 
-        <!-- jQuery 3 -->
+            // Add event listener for opening and closing details
 
-        <!-- jQuery UI 1.11.4 -->
+        });;
+    </script>
 
-        <!-- Bootstrap 3.3.7 -->
-        <script src="{{ url_for('static', filename='bower_components/bootstrap/dist/js/bootstrap.min.js')}}"></script>
-        <!-- Select2 -->
-        <script src="{{ url_for('static', filename='bower_components/select2/dist/js/select2.full.min.js')}}"></script>
-        <!-- InputMask -->
-        <script src="{{ url_for('static', filename='plugins/input-mask/jquery.inputmask.js')}}"></script>
-        <script src="{{ url_for('static', filename='plugins/input-mask/jquery.inputmask.date.extensions.js')}}"></script>
-        <script src="{{ url_for('static', filename='plugins/input-mask/jquery.inputmask.extensions.js')}}"></script>
-        <!-- date-range-picker -->
-        <script src="{{ url_for('static', filename='bower_components/moment/min/moment.min.js')}}"></script>
-        <script src="{{ url_for('static', filename='bower_components/bootstrap-daterangepicker/daterangepicker.js')}}"></script>
-        <!-- bootstrap datepicker -->
-        <script src="{{ url_for('static', filename='bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js')}}"></script>
-        <!-- bootstrap color picker -->
-        <script src="{{ url_for('static', filename='bower_components/bootstrap-colorpicker/dist/js/bootstrap-colorpicker.min.js')}}"></script>
-        <!-- bootstrap time picker -->
-        <script src="{{ url_for('static', filename='plugins/timepicker/bootstrap-timepicker.min.js')}}"></script>
-        <!-- SlimScroll -->
-        <script src="{{ url_for('static', filename='bower_components/jquery-slimscroll/jquery.slimscroll.min.js')}}"></script>
-        <!-- iCheck 1.0.1 -->
-        <script src="{{ url_for('static', filename='plugins/iCheck/icheck.min.js')}}"></script>
-        <!-- FastClick -->
-        <script src="{{ url_for('static', filename='bower_components/fastclick/lib/fastclick.js')}}"></script>
-        <!-- AdminLTE App -->
-        <script src="{{ url_for('static', filename='dist/js/adminlte.min.js')}}"></script>
-        <!-- AdminLTE for demo purposes -->
-        <script src="{{ url_for('static', filename='dist/js/demo.js')}}"></script>
+    <!-- jQuery 3 -->
+
+    <!-- jQuery UI 1.11.4 -->
+
+    <!-- Bootstrap 3.3.7 -->
+    <script src="{{ url_for('static', filename='bower_components/bootstrap/dist/js/bootstrap.min.js')}}"></script>
+    <!-- Select2 -->
+    <script src="{{ url_for('static', filename='bower_components/select2/dist/js/select2.full.min.js')}}"></script>
+    <!-- InputMask -->
+    <script src="{{ url_for('static', filename='plugins/input-mask/jquery.inputmask.js')}}"></script>
+    <script src="{{ url_for('static', filename='plugins/input-mask/jquery.inputmask.date.extensions.js')}}"></script>
+    <script src="{{ url_for('static', filename='plugins/input-mask/jquery.inputmask.extensions.js')}}"></script>
+    <!-- date-range-picker -->
+    <script src="{{ url_for('static', filename='bower_components/moment/min/moment.min.js')}}"></script>
+    <script src="{{ url_for('static', filename='bower_components/bootstrap-daterangepicker/daterangepicker.js')}}"></script>
+    <!-- bootstrap datepicker -->
+    <script src="{{ url_for('static', filename='bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js')}}"></script>
+    <!-- bootstrap color picker -->
+    <script src="{{ url_for('static', filename='bower_components/bootstrap-colorpicker/dist/js/bootstrap-colorpicker.min.js')}}"></script>
+    <!-- bootstrap time picker -->
+    <script src="{{ url_for('static', filename='plugins/timepicker/bootstrap-timepicker.min.js')}}"></script>
+    <!-- SlimScroll -->
+    <script src="{{ url_for('static', filename='bower_components/jquery-slimscroll/jquery.slimscroll.min.js')}}"></script>
+    <!-- iCheck 1.0.1 -->
+    <script src="{{ url_for('static', filename='plugins/iCheck/icheck.min.js')}}"></script>
+    <!-- FastClick -->
+    <script src="{{ url_for('static', filename='bower_components/fastclick/lib/fastclick.js')}}"></script>
+    <!-- AdminLTE App -->
+    <script src="{{ url_for('static', filename='dist/js/adminlte.min.js')}}"></script>
+    <!-- AdminLTE for demo purposes -->
+    <script src="{{ url_for('static', filename='dist/js/demo.js')}}"></script>
 
 </body>
 

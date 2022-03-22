@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, jsonify,make_response,session
+from flask import Flask, render_template, request, redirect, url_for, jsonify,make_response,session,send_file
 from flask.sessions import NullSession
 from flask_socketio import SocketIO
 from flask_login.utils import logout_user
@@ -9,10 +9,23 @@ import pdfkit
 import json
 from datetime import datetime, timedelta
 import decimal
+import time 
+from openpyxl.styles import Alignment , Font , PatternFill
+import openpyxl
 
 class Encoder(json.JSONEncoder):
     def default(self, obj):
         if isinstance(obj, decimal.Decimal): return float(obj)
+class create_dict(dict): 
+  
+    # __init__ function 
+    def __init__(self): 
+        self = dict() 
+          
+    # Function to add key:value 
+    def add(self, key, value): 
+        self[key] = value
+
 
 #ddddd
 app = Flask(__name__)
@@ -194,10 +207,30 @@ def reportSidePOT_2(pdOrder):
 
 @app.route('/report/QC/<string:pdOrder>')
 def reportQC(pdOrder):    
+    server = "172.30.2.2"
+    database = "OEE_DB"
+    username = "sa"
+    password = "p@ssw0rd"
+    cnxn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER='+ server +';DATABASE='+database+';UID='+username+';PWD='+password)
+    PD_QC = cnxn.cursor()
+    PD_QC.execute("SELECT * FROM SCADA_DB.dbo.QC_Process WHERE PD_Order = ?",(pdOrder,))
     
-    return render_template('reportQC.html',pdOrder=pdOrder)
+    cnxn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER='+ server +';DATABASE='+database+';UID='+username+';PWD='+password)
+    PD_QC2 = cnxn.cursor()
+    PD_QC2.execute("SELECT * FROM SCADA_DB.dbo.QC_Process WHERE PD_Order = ?",(pdOrder,))
+    
+    cnxn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER='+ server +';DATABASE='+database+';UID='+username+';PWD='+password)
+    PD_QC3 = cnxn.cursor()
+    PD_QC3.execute("SELECT * FROM SCADA_DB.dbo.QC_Process WHERE PD_Order = ?",(pdOrder,))
+    dataPD = []
+    dataPD_len = 0
+    for i in PD_QC3:
+       
+        dataPD.append(i[9])
+    dataPD_len = len(dataPD) - 1
+    return render_template('reportQC.html',pdOrder=pdOrder,PD_QC = PD_QC,PD_QC2=PD_QC2,dataPD = dataPD,dataPD_len=dataPD_len)
 
- 
+
 @app.route('/batch_report_API' ,methods=["GET", "POST"])
 def batch_report_API():
     global count
@@ -231,7 +264,80 @@ def batch_report_API():
 @app.route('/QC_report')
 def QC_report():    
     return render_template('QC_report.html') 
+
+
+@app.route('/Report_QC_Excel')
+def Report_QC_Excel():
+  
+    df = pd.read_json('http://192.168.1.145:5001//QC_report_Excel_API')
+    print(df)
+    df.to_excel('QC_report.xlsx',index=False)
+    
+    time.sleep(1)
+    
+    wabu = openpyxl.load_workbook('QC_report.xlsx')
+    washi = wabu.active
+    washi.insert_rows(1,5)
+    washi['A1'] = 'QC Report'
+    washi['A1'].alignment = Alignment(vertical='center')
+    washi['A1'].alignment = Alignment(horizontal='center')
+    washi['A1'].font = Font(color='FFFFFF',
+                        size=24,bold=True)
+    washi['A1'].fill = PatternFill(patternType='solid',fgColor='154360')
+    
+    washi.merge_cells('A1:F1')
+    washi.column_dimensions['A'].width = 20
+    washi.column_dimensions['B'].width = 20
+    washi.column_dimensions['C'].width = 20
+    washi.column_dimensions['D'].width = 20
+    washi.column_dimensions['E'].width = 20
+    washi.column_dimensions['F'].width = 20
+    washi.column_dimensions['G'].width = 20
+    washi.column_dimensions['H'].width = 20
+    
+   
+    wabu.save('QC_report.xlsx')
+    
+    return send_file('..\QC_report.xlsx') 
+
 #ss0000
+
+@app.route('/QC_report_Excel_API' ,methods=["GET", "POST"])
+def QC_report_Excel_API():
+
+    
+    server = "172.30.2.2"
+    port = 5432
+    database = "OEE_DB"
+    username = "sa"
+    password = "p@ssw0rd"
+    cnxn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER='+ server +';DATABASE='+database+';UID='+username+';PWD='+password)
+    PD_QC = cnxn.cursor()
+    PD_QC.execute("SELECT DISTINCT PD_Order FROM SCADA_DB.dbo.QC_Process")
+    payload = []
+    for i in  PD_QC:
+        print(i[0])
+        cnxn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER='+ server +';DATABASE='+database+';UID='+username+';PWD='+password)
+        qc_report = cnxn.cursor()
+        qc_report.execute("""
+                          SELECT TOP(1) Product_Name  , PD_Order , [Lot_No.] ,BAY ,[Tank_S/N]   , (SELECT TOP(1) [DateTime] 
+                            FROM SCADA_DB.dbo.QC_Process WHERE [Action] = 'QC_RECEIVE' AND  PD_Order = ? ) As QC_START 
+                            , (SELECT TOP(1) [DateTime] FROM SCADA_DB.dbo.QC_Process WHERE ([Action] = 'QC_PASS' OR [Action] = 'QC_REJECT') AND PD_Order = ? ) As QC_FINISH
+                            , DATEDIFF(MINUTE , (SELECT TOP(1) [DateTime] FROM SCADA_DB.dbo.QC_Process WHERE [Action] = 'QC_RECEIVE' AND  PD_Order = ? ) ,
+                            (SELECT TOP(1) [DateTime] FROM SCADA_DB.dbo.QC_Process WHERE ([Action] = 'QC_PASS' OR [Action] = 'QC_REJECT') AND PD_Order = ? )) ,
+                            [User] 
+                            FROM SCADA_DB.dbo.QC_Process WHERE PD_Order = ? 
+                          """,(i[0],i[0],i[0],i[0],i[0]))
+       
+
+        
+        content = {}
+        for result in qc_report:
+            content = {'Product_Name': str(result[0]), 'PD_Order': result[1],'Lot_No': result[2],'BAY': result[3],'Tank_SN': result[4],'QC_START': str(result[5]),'QC_FINISH': str(result[6]),'QC_TIME': str(result[7]),'User': str(result[8])}
+            payload.append(content)
+            content = {}
+    return json.dumps(payload, cls = Encoder), 201
+
 @app.route('/QC_report_API',methods=["GET", "POST"])
 def QC_report_API():    
  
