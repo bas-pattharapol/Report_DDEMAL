@@ -136,10 +136,6 @@
         position: relative
     }
     
-    .track .step.active:before {
-        background: #FF5722
-    }
-    
     .track .step::before {
         height: 7px;
         position: absolute;
@@ -149,8 +145,39 @@
         top: 38px
     }
     
-    .track .step.active .icon {
-        background: #ee5435;
+    .track .step.active.receive:before {
+        background: #5DADE2
+    }
+    
+    .track .step.active.receive .icon {
+        background: #5DADE2;
+        color: #fff
+    }
+    
+    .track .step.active.hold:before {
+        background: #F5B041
+    }
+    
+    .track .step.active.hold .icon {
+        background: #F5B041;
+        color: #fff
+    }
+    
+    .track .step.active.pass:before {
+        background: #27AE60
+    }
+    
+    .track .step.active.pass .icon {
+        background: #27AE60;
+        color: #fff
+    }
+    
+    .track .step.active.reject:before {
+        background: #E74C3C
+    }
+    
+    .track .step.active.reject .icon {
+        background: #E74C3C;
         color: #fff
     }
     
@@ -230,10 +257,18 @@
                 <div class="col-md-1"></div>
                 <div class="col-md-10">
                     <div class="track">
-                        {% for j in PD_QC2%}
-                        <div class="step active"> <span class="icon"> <i class="fa fa-check"></i> </span> <span class="text">{{j[9]}}</span> <span class="text">{{j[7]}}</span></div>
+                        {% for j in PD_QC2%} {%if j[9] == 'QC_PASS'%}
+                        <div class="step active pass"> <span class="icon"> <i class="fa fa-check"></i> </span> <span class="text">{{j[9]}}</span> <span class="text">{{j[7]}}</span></div>
+                        {%elif j[9] == 'QC_REJECT'%}
+                        <div class="step active reject"> <span class="icon"> <i class="fa fa-check"></i> </span> <span class="text">{{j[9]}}</span> <span class="text">{{j[7]}}</span></div>
+                        {%elif j[9] == 'QC_RECEIVE'%}
+                        <div class="step active receive"> <span class="icon"> <i class="fa fa-check"></i> </span> <span class="text">{{j[9]}}</span> <span class="text">{{j[7]}}</span></div>
+                        {%elif j[9] == 'QC_HOLD'%}
+                        <div class="step active hold"> <span class="icon"> <i class="fa fa-check"></i> </span> <span class="text">{{j[9]}}</span> <span class="text">{{j[7]}}</span></div>
 
-                        {%endfor%} {%if dataPD[dataPD_len] == 'QC_PASS' or dataPD[dataPD_len] == 'QC_REJECT'%} {%else%}
+                        {%else%}
+                        <div class="step active hold"> <span class="icon"> <i class="fa fa-check"></i> </span> <span class="text">{{j[9]}}</span> <span class="text">{{j[7]}}</span></div>
+                        {%endif%} {%endfor%} {%if dataPD[dataPD_len] == 'QC_PASS' or dataPD[dataPD_len] == 'QC_REJECT'%} {%else%}
                         <div class="step"> <span class="icon"> <i class="fa fa-user"></i> </span> <span class="text">---</span> <span class="text">--:--:--</span></div>
 
                         {%endif%}

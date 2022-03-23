@@ -355,20 +355,20 @@ def QC_report_API():
         cnxn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER='+ server +';DATABASE='+database+';UID='+username+';PWD='+password)
         qc_report = cnxn.cursor()
         qc_report.execute("""
-                          SELECT TOP(1) Product_Name  , PD_Order , [Lot_No.] ,BAY ,[Tank_S/N]   , (SELECT TOP(1) [DateTime] 
-                            FROM SCADA_DB.dbo.QC_Process WHERE [Action] = 'QC_RECEIVE' AND  PD_Order = ? ) As QC_START 
+                          SELECT TOP(1) Product_Name  , PD_Order , [Lot_No.] ,BAY ,[Tank_S/N] ,(SELECT COUNT(*) FROM SCADA_DB.dbo.QC_Process WHERE [Action] = 'QC_RECEIVE' AND PD_Order = ?) 
+                          , (SELECT TOP(1) [DateTime] FROM SCADA_DB.dbo.QC_Process WHERE [Action] = 'QC_RECEIVE' AND  PD_Order = ? ) As QC_START 
                             , (SELECT TOP(1) [DateTime] FROM SCADA_DB.dbo.QC_Process WHERE ([Action] = 'QC_PASS' OR [Action] = 'QC_REJECT') AND PD_Order = ? ) As QC_FINISH
                             , DATEDIFF(MINUTE , (SELECT TOP(1) [DateTime] FROM SCADA_DB.dbo.QC_Process WHERE [Action] = 'QC_RECEIVE' AND  PD_Order = ? ) ,
                             (SELECT TOP(1) [DateTime] FROM SCADA_DB.dbo.QC_Process WHERE ([Action] = 'QC_PASS' OR [Action] = 'QC_REJECT') AND PD_Order = ? )) ,
                             [User] 
                             FROM SCADA_DB.dbo.QC_Process WHERE PD_Order = ? 
-                          """,(i[0],i[0],i[0],i[0],i[0]))
+                          """,(i[0],i[0],i[0],i[0],i[0],i[0]))
        
 
         
         content = {}
         for result in qc_report:
-            content = {'Product_Name': str(result[0]), 'PD_Order': result[1],'Lot_No': result[2],'BAY': result[3],'Tank_SN': result[4],'QC_START': str(result[5]),'QC_FINISH': str(result[6]),'QC_TIME': str(result[7]),'User': str(result[8])}
+            content = {'Product_Name': str(result[0]), 'PD_Order': result[1],'Lot_No': result[2],'BAY': result[3],'Tank_SN': result[4],'NO': result[5],'QC_START': str(result[6]),'QC_FINISH': str(result[7]),'QC_TIME': str(result[8]),'User': str(result[9])}
             payload.append(content)
             content = {}
     #print(payload)
