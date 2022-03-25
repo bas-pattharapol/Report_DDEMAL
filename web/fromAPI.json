@@ -1,0 +1,29 @@
+{
+    "LoginOEE": [
+        {
+            "User": "Bas",
+            "Level": "1",
+            "Time": "15:12:10"
+        },
+        {
+            "User": "TEST",
+            "Level": "4",
+            "Time": "15:12:60"
+        },
+        {
+            "User": "CAT",
+            "Level": "8",
+            "Time": "16:12:60"
+        }
+    ]
+}
+
+{
+    "LoginOEE": [
+        {
+            "User": "ujmad",
+            "Level": "4",
+            "Time": "2022-03-24 18:23:25.018658"
+        }
+    ]
+}
